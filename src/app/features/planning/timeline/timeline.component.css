@@ -1,0 +1,53 @@
+.today-btn {
+    display: inline-block;
+    padding: 5px 20px 5px 20px;
+    border: none;
+    margin-right: 4px;
+    border-radius: 16px;
+    width: 85px;
+    background-color: none; 
+    color: black; 
+    cursor: pointer; 
+    transition: background-color 0.2s ease-in-out; 
+    font-family: "Google Sans",Roboto,Arial,sans-serif;
+  }
+  .circle-btn.active {
+    background-color: #ddd;
+  }
+  .year {
+    font-size: 16px;
+    color: grey;
+  }
+
+
+  .circle-btn {
+    display: inline-block;
+    padding: 5px 20px;
+    border: none;
+    margin-right: 4px;
+    border-radius: 16px;
+    width: 85px;
+    background-color: transparent; 
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    font-family: "Google Sans", Roboto, Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .circle-btn:hover {
+    background-color: #ddd; 
+    color: white; 
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .circle-btn:active {
+    transform: scale(0.95); 
+    background-color: #ddd; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
+  }
+  
+
+
+  
