@@ -10,7 +10,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class RendezvousPopupComponent implements OnInit {
 
   eventForm!: FormGroup;
-  eventTypes: string[] = ['Meeting', 'Reminder', 'Task'];
   hours: string[] = ['10:00', '11:00', '12:00']; // Example hours
   minutes: string[] = ['00', '15', '30', '45']; // Example minutes
   selectedType!: string;
@@ -20,10 +19,17 @@ export class RendezvousPopupComponent implements OnInit {
     public dialogRef: MatDialogRef<RendezvousPopupComponent>,
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.eventForm = this.fb.group({
+      name1: [''],
+      name2: [''],
+      type: ['']
+    });
+  }
   ngOnInit(): void {
     this.eventForm = this.fb.group({
-      title: ['', Validators.required],
+      name1: ['', Validators.required],
+      name2: ['', Validators.required],
       type: ['', Validators.required],
       hour: ['', Validators.required],
       minute: ['', Validators.required],
@@ -31,8 +37,6 @@ export class RendezvousPopupComponent implements OnInit {
       place: [''],
       note: ['']
     });
-
-    this.selectedType = this.eventTypes[0];
     this.eventForm.controls['type'].setValue(this.selectedType);
   }
 
@@ -40,6 +44,8 @@ export class RendezvousPopupComponent implements OnInit {
   selectType(type: string): void {
     this.selectedType = type;
     this.eventForm.controls['type'].setValue(type);
+    console.log(this.selectedType);
+    
   }
 
   onNoClick(): void {
@@ -52,4 +58,8 @@ export class RendezvousPopupComponent implements OnInit {
     }
   }
 
+  // selectType(type: string) {
+  //   this.selectedType = type;
+  //   this.eventForm.get('type')?.setValue(type);
+  // }
 }

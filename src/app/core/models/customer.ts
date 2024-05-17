@@ -1,7 +1,7 @@
 export class Customer {
     id!: number;
     name!: string;
-    email!: string;
+    prenom!: string;
     phone!: string;
 
   }

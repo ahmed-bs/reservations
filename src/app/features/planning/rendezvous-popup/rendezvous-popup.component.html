@@ -1,60 +1,67 @@
-<h2 mat-dialog-title>Add event</h2>
-<mat-dialog-content>
-  <form [formGroup]="eventForm">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title">
-    </mat-form-field>
+<h3>Add event</h3>
 
+<div class="dialog-content">
+  <form [formGroup]="eventForm" style="zoom: 80%;">
     <div class="form-group">
-      <label>Type</label>
-      <div>
-        <!-- <mat-chip-list>
-        <mat-chip *ngFor="let type of eventTypes" 
-                    [selectable]="true" 
-                    [removable]="false" 
-                    [selected]="selectedType === type"
-                    (click)="selectType(type)">
-            {{ type }}
-          </mat-chip>
-        </mat-chip-list> -->
+      <div class="form-field half-width circular-input">
+        <label for="name1"><i class="icon">🪪</i>Name</label>
+        <input id="name1" type="text" formControlName="name1">
+      </div>
+      <div class="form-field half-width circular-input">
+        <label for="name2"><i class="icon">🪪</i>Name</label>
+        <input id="name2" type="text" formControlName="name2">
       </div>
     </div>
 
-    <div class="form-group">
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Hour</mat-label>
-        <mat-select formControlName="hour">
-          <mat-option *ngFor="let hour of hours" [value]="hour">{{ hour }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="outline" class="half-width">
-        <mat-label>Minute</mat-label>
-        <mat-select formControlName="minute">
-          <mat-option *ngFor="let minute of minutes" [value]="minute">{{ minute }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div class="form-group col-md-4">
+      <div class="form-field half-width circular-input">
+        <label><i class="icon">☑️</i> Type</label>
+        <div class="btn-group">
+          <button class="circle-btn" [ngClass]="{'selected': selectedType === 'Dépôt'}" (click)="selectType('Dépôt')">
+            Dépôt
+          </button>
+          <button class="circle-btn" [ngClass]="{'selected': selectedType === 'Essayage'}"
+            (click)="selectType('Essayage')">
+            Essayage
+          </button>
+        </div>
+      </div>
     </div>
+    <div class="form-group">
+      <div class="form-field half-width circular-input">
+        <label for="hour"><i class="icon">🕒</i> Hour</label>
+        <select id="hour" formControlName="hour">
+          <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
+        </select>
+      </div>
+      <div class="form-field half-width circular-input">
+        <label for="minute"><i class="icon">🕒</i> Minute</label>
+        <select id="minute" formControlName="minute">
+          <option *ngFor="let minute of minutes" [value]="minute">{{ minute }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-field full-width circular-input">
+      <label for="date"><i class="icon">📅</i> Date</label>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Date</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="date">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+    </div>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Place</mat-label>
-      <input matInput formControlName="place">
-    </mat-form-field>
+    <div class="form-field full-width circular-input" appearance="outline">
+      <label for="place"><i class="icon">☎️</i> Phone</label>
+      <input id="place" type="tel" formControlName="place">
+    </div>
 
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Note</mat-label>
-      <textarea matInput formControlName="note"></textarea>
-    </mat-form-field>
+    <div class="form-field full-width circular-input">
+      <label for="note"><i class="icon">📝</i> Note</label>
+      <textarea id="note" formControlName="note"></textarea>
+    </div>
   </form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button color="primary" (click)="onSave()">Save</button>
-</mat-dialog-actions>
+</div>
+
+<div class="dialog-actions">
+  <button class="cancel-button" (click)="onNoClick()">Cancel</button>
+  <button class="save-button" (click)="onSave()">Save</button>
+</div>
