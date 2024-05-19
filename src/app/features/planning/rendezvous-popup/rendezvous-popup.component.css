@@ -3,6 +3,7 @@
 }
 h3{
   padding: 27px;
+  font-size: 22px;
 }
 .form-field {
   display: flex;
@@ -24,6 +25,7 @@ h3{
 .circular-input input,
 .circular-input select,
 .circular-input textarea {
+  margin-right: 5px;
   width: 100%;
   padding: 10px 20px;
   border: 1px solid #ccc;

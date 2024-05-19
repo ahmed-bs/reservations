@@ -1,15 +1,15 @@
-<h3>Add event</h3>
+<h3>Ajouter un événement</h3>
 
 <div class="dialog-content">
-  <form [formGroup]="eventForm" style="zoom: 80%;">
+  <form [formGroup]="eventForm" style="zoom: 80%;" (ngSubmit)="onSave()">
     <div class="form-group">
       <div class="form-field half-width circular-input">
-        <label for="name1"><i class="icon">🪪</i>Name</label>
-        <input id="name1" type="text" formControlName="name1">
+        <label for="name1"><i class="icon">🪪</i>Nom</label>
+        <input id="name1" type="text" formControlName="name1" required>
       </div>
       <div class="form-field half-width circular-input">
-        <label for="name2"><i class="icon">🪪</i>Name</label>
-        <input id="name2" type="text" formControlName="name2">
+        <label for="name2"><i class="icon">🪪</i>Prénom</label>
+        <input id="name2" type="text" formControlName="name2" required>
       </div>
     </div>
 
@@ -17,19 +17,19 @@
       <div class="form-field half-width circular-input">
         <label><i class="icon">☑️</i> Type</label>
         <div class="btn-group">
-          <button class="circle-btn" [ngClass]="{'selected': selectedType === 'Dépôt'}" (click)="selectType('Dépôt')">
+          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedType == 'Dépôt'}" (click)="selectType('Dépôt')">
             Dépôt
           </button>
-          <button class="circle-btn" [ngClass]="{'selected': selectedType === 'Essayage'}"
-            (click)="selectType('Essayage')">
+          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedType == 'Essayage'}" (click)="selectType('Essayage')">
             Essayage
           </button>
         </div>
       </div>
     </div>
+
     <div class="form-group">
       <div class="form-field half-width circular-input">
-        <label for="hour"><i class="icon">🕒</i> Hour</label>
+        <label for="hour"><i class="icon">🕒</i> Heure</label>
         <select id="hour" formControlName="hour">
           <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
         </select>
@@ -41,27 +41,27 @@
         </select>
       </div>
     </div>
+
     <div class="form-field full-width circular-input">
       <label for="date"><i class="icon">📅</i> Date</label>
-
-      <input matInput [matDatepicker]="picker" formControlName="date">
+      <input matInput [matDatepicker]="picker" formControlName="date" required>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </div>
 
     <div class="form-field full-width circular-input" appearance="outline">
-      <label for="place"><i class="icon">☎️</i> Phone</label>
-      <input id="place" type="tel" formControlName="place">
+      <label for="tel"><i class="icon">☎️</i> Téléphone</label>
+      <input id="tel" type="tel" formControlName="tel" required>
     </div>
 
     <div class="form-field full-width circular-input">
       <label for="note"><i class="icon">📝</i> Note</label>
-      <textarea id="note" formControlName="note"></textarea>
+      <textarea id="note" formControlName="note" required></textarea>
+    </div>
+
+    <div class="dialog-actions">
+      <button class="cancel-button" type="button" (click)="onNoClick()">Annuler</button>
+      <button class="save-button" type="submit">Sauvegarder</button>
     </div>
   </form>
-</div>
-
-<div class="dialog-actions">
-  <button class="cancel-button" (click)="onNoClick()">Cancel</button>
-  <button class="save-button" (click)="onSave()">Save</button>
 </div>

@@ -25,6 +25,6 @@ export enum AppointmentType {
     deposit!: boolean;
     customerId!: number;
     userId!: number;
-    user!: User;
+    user?: User;
   }
   
