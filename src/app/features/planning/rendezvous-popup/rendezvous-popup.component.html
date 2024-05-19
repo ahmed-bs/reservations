@@ -17,10 +17,10 @@
       <div class="form-field half-width circular-input">
         <label><i class="icon">☑️</i> Type</label>
         <div class="btn-group">
-          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedType == 'Dépôt'}" (click)="selectType('Dépôt')">
+          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedType == 0}" (click)="selectType(0)">
             Dépôt
           </button>
-          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedType == 'Essayage'}" (click)="selectType('Essayage')">
+          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedType == 1}" (click)="selectType(1)">
             Essayage
           </button>
         </div>

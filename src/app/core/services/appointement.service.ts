@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Appointment } from '../models/appointement';
+import { endPoint } from '../utils/endpoint';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppointmentService {
-  private apiUrl = 'https://your-api-url/appointments'; 
+  private apiUrl =  endPoint.Api + 'api/Appointment/AddAppointment'; 
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +22,8 @@ export class AppointmentService {
   }
 
   createAppointment(appointment: Appointment): Observable<Appointment> {
+    console.log("look here :",appointment);
+    
     return this.http.post<Appointment>(this.apiUrl, appointment);
   }
 

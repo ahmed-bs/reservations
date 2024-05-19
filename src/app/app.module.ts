@@ -26,6 +26,7 @@ import { MatChipListbox } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import {MatMenuTrigger, MatMenuModule} from '@angular/material/menu';
 import { RendezvousPopupComponent } from './shared/rendezvous-popup/rendezvous-popup.component';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
 
   imports: [ MatDialogModule,
@@ -34,6 +35,7 @@ import { RendezvousPopupComponent } from './shared/rendezvous-popup/rendezvous-p
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     BrowserAnimationsModule,
 
     MatMenuTrigger,

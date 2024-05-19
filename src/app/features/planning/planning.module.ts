@@ -21,6 +21,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatChipListbox } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -30,6 +31,7 @@ import { MatIconModule } from '@angular/material/icon';
     FormsModule, ReactiveFormsModule,
     CommonModule,
     PlanningRoutes,
+    HttpClientModule,
 
     MatButtonModule,
     MatDialogModule,
