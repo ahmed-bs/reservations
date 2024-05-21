@@ -4,18 +4,18 @@
   <form [formGroup]="eventForm" style="zoom: 80%;" (ngSubmit)="onSave()">
     <div class="form-group">
       <div class="form-field half-width circular-input">
-        <label for="name1"><i class="icon">🪪</i>Nom</label>
+        <label for="name1"><i class="icon">🪪</i>Nom*</label>
         <input id="name1" type="text" formControlName="name1" required>
       </div>
       <div class="form-field half-width circular-input">
-        <label for="name2"><i class="icon">🪪</i>Prénom</label>
+        <label for="name2"><i class="icon">🪪</i>Prénom*</label>
         <input id="name2" type="text" formControlName="name2" required>
       </div>
     </div>
 
     <div class="form-group col-md-4">
       <div class="form-field half-width circular-input">
-        <label><i class="icon">☑️</i> Type</label>
+        <label><i class="icon">☑️</i>Type*</label>
         <div class="btn-group">
           <button type="button" class="circle-btn" [ngClass]="{'selected': selectedType == 0}" (click)="selectType(0)">
             Dépôt
@@ -29,33 +29,37 @@
 
     <div class="form-group">
       <div class="form-field half-width circular-input">
-        <label for="hour"><i class="icon">🕒</i> Heure</label>
-        <select id="hour" formControlName="hour">
-          <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
-        </select>
+        <label for="hour"><i class="icon">🕒</i>Heure*</label>
+        <input matInput type="time" step="1" id="hour" formControlName="hour" value="16:32"     min="10:00"
+        max="19:00" required>
+   
       </div>
-      <div class="form-field half-width circular-input">
-        <label for="minute"><i class="icon">🕒</i> Minute</label>
-        <select id="minute" formControlName="minute">
-          <option *ngFor="let minute of minutes" [value]="minute">{{ minute }}</option>
-        </select>
-      </div>
-    </div>
 
-    <div class="form-field full-width circular-input">
-      <label for="date"><i class="icon">📅</i> Date</label>
-      <input matInput [matDatepicker]="picker" formControlName="date" required>
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <div class="form-field half-width circular-input">
+        <label for="date"><i class="icon">📅</i>Date*</label>
+        <input matInput [matDatepicker]="picker" formControlName="date" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </div>
+      <div   style="color: red;font: 1em sans-serif;"    *ngIf="hour?.invalid && (hour!.dirty || hour!.touched)">
+        <div *ngIf="hour?.errors?.['required']">
+          Time is required.
+        </div>
+        <div *ngIf="hour?.errors?.['timeRange']">
+          Time must be between 10:00 and 19:00.
+        </div>
+      </div>
     </div>
+  
+
 
     <div class="form-field full-width circular-input" appearance="outline">
-      <label for="tel"><i class="icon">☎️</i> Téléphone</label>
+      <label for="tel"><i class="icon">☎️</i>Téléphone*</label>
       <input id="tel" type="tel" formControlName="tel" required>
     </div>
 
     <div class="form-field full-width circular-input">
-      <label for="note"><i class="icon">📝</i> Note</label>
+      <label for="note"><i class="icon">📝</i>Note</label>
       <textarea id="note" formControlName="note" required></textarea>
     </div>
 

@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { timeRangeValidator } from 'src/app/core/interceptors/time-range-validator';
 import { Appointment } from 'src/app/core/models/appointement';
 import { Customer } from 'src/app/core/models/customer';
 import { AppointmentService } from 'src/app/core/services/appointement.service';
@@ -21,6 +23,7 @@ export class RendezvousPopupComponent implements OnInit {
 
   
   constructor(
+    private _snackBar: MatSnackBar,
     // @Inject(MAT_DIALOG_DATA) private appointementService: AppointmentService,
     private appointementService: AppointmentService, 
     private dialogRef: MatDialogRef<RendezvousPopupComponent>,
@@ -34,8 +37,7 @@ export class RendezvousPopupComponent implements OnInit {
       name2: ['', Validators.required],
       type: ['', Validators.required],
       date: [new Date(), Validators.required],
-      hour: [null, Validators.required],
-      minute: [null, Validators.required],
+      hour: [null,[ Validators.required,timeRangeValidator('10:00', '19:00')]],
       tel: ['', [Validators.required,Validators.pattern(/^\d+$/)]],
       note: ['']
     });
@@ -60,19 +62,19 @@ export class RendezvousPopupComponent implements OnInit {
 
 
   onSave(): void {
-    console.log(this.eventForm.value.type);
-    
-console.log(this.eventForm);
-
-
     if (this.eventForm.valid) {
       const formValue = this.eventForm.value;
+      let time = formValue.hour;
+      if (time.length === 5) {
+        // Adding seconds if they are not present
+        time = `${time}:00`;
+      }
       this.dialogRef.close(this.eventForm.value);
       const appointment: Appointment = {
         id: 0,
         type: formValue.type ,
         date: new Date(formValue.date),
-        time: `${formValue.hour}:${formValue.minute}:00`,
+        time: time,
         customer: {
           id: 0,
           name: formValue.name1,
@@ -86,26 +88,41 @@ console.log(this.eventForm);
         customerId: 0,
         userId: 1,
       };
-      console.log("this ibs the place that u need :",appointment);
 
       this.appointementService.createAppointment(appointment).subscribe({
         
         next: (response) => {
           console.log('Appointment created successfully:', response);
+          this._snackBar.open('Appointment created successfully', 'OK', {
+            duration: 4000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+          });
           this.dialogRef.close(this.eventForm.value);
         },
         error: (error) => {
-          console.log("this ibs the place that u need :",appointment);
+          this._snackBar.open('Error creating appointment', 'OK', {
+            duration: 4000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+          });
           console.error('Error creating appointment:', error);
         }
       });
     } else {
+      this._snackBar.open('Form is invalid', 'OK', {
+        duration: 4000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+      });
       console.warn('Form is invalid');
     }
   }
 
 
-  
+  get hour() {
+    return this.eventForm.get('hour');
+  }
 
 
 }

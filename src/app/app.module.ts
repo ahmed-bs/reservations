@@ -25,8 +25,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatChipListbox } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import {MatMenuTrigger, MatMenuModule} from '@angular/material/menu';
-import { RendezvousPopupComponent } from './shared/rendezvous-popup/rendezvous-popup.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
 
   imports: [ MatDialogModule,
@@ -50,7 +50,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatChipsModule,
     MatIconModule,
     MatFormFieldModule,
-    
+    MatSnackBarModule,
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
@@ -58,7 +58,7 @@ import { HttpClientModule } from '@angular/common/http';
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
   declarations: [
-    AppComponent,SidebarComponent,HeaderComponent,MainComponent,RendezvousPopupComponent
+    AppComponent,SidebarComponent,HeaderComponent,MainComponent
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -9,12 +9,12 @@ import { endPoint } from '../utils/endpoint';
   providedIn: 'root'
 })
 export class AppointmentService {
-  private apiUrl =  endPoint.Api + 'api/Appointment/AddAppointment'; 
+  private apiUrl =  endPoint.Api + 'api/Appointment'; 
 
   constructor(private http: HttpClient) {}
 
   getAppointments(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>(this.apiUrl);
+    return this.http.get<Appointment[]>(this.apiUrl+'/Get_AllAppointments');
   }
 
   getAppointment(id: number): Observable<Appointment> {
@@ -22,9 +22,7 @@ export class AppointmentService {
   }
 
   createAppointment(appointment: Appointment): Observable<Appointment> {
-    console.log("look here :",appointment);
-    
-    return this.http.post<Appointment>(this.apiUrl, appointment);
+    return this.http.post<Appointment>(this.apiUrl+'/AddAppointment', appointment);
   }
 
   updateAppointment(id: number, appointment: Appointment): Observable<Appointment> {
