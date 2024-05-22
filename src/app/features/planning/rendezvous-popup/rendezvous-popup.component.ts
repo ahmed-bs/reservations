@@ -24,7 +24,6 @@ export class RendezvousPopupComponent implements OnInit {
   
   constructor(
     private _snackBar: MatSnackBar,
-    // @Inject(MAT_DIALOG_DATA) private appointementService: AppointmentService,
     private appointementService: AppointmentService, 
     private dialogRef: MatDialogRef<RendezvousPopupComponent>,
     private fb: FormBuilder

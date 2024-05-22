@@ -108,3 +108,9 @@
 .yellowEvent {
   color: #e3bc08;
 }
+
+
+.mat-container .mat-dialog-container {
+  border-radius: 20px !important;
+  width: 100px;
+}

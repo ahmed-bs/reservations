@@ -23,6 +23,7 @@ import { MatChipListbox } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
 import {MatSnackBarModule} from '@angular/material/snack-bar'
+import { On_event_clickComponent } from './on_event_click/on_event_click.component';
 
 
 
@@ -48,7 +49,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar'
     MatSnackBarModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
-  declarations: [PlanningComponent, TimelineComponent, RendezvousPopupComponent]
+  declarations: [PlanningComponent, TimelineComponent, RendezvousPopupComponent,On_event_clickComponent]
 })
 export class PlanningModule { }
 

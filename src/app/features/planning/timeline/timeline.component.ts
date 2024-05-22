@@ -28,6 +28,9 @@ import { EventColor } from 'calendar-utils';
 import { MatDialog } from '@angular/material/dialog';
 import { RendezvousPopupComponent } from '../rendezvous-popup/rendezvous-popup.component';
 import { AppointmentService } from 'src/app/core/services/appointement.service';
+import { On_event_clickComponent } from '../on_event_click/on_event_click.component';
+import { Appointment } from 'src/app/core/models/appointement';
+import { CalendarEventWithAppointment } from 'src/app/core/models/calendar-event ';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -67,7 +70,7 @@ export class TimelineComponent implements OnInit {
   // @ViewChild('modalContent', { static: true }) modalContent!: TemplateRef<any>;
 
   view: CalendarView = CalendarView.Month;
-  events!: CalendarEvent[];
+  events!: CalendarEventWithAppointment[];
   CalendarView = CalendarView;
   refresh = new Subject<void>();
   viewDate: Date = new Date();
@@ -78,21 +81,21 @@ export class TimelineComponent implements OnInit {
    }
   // modalData!: {
   //   action: string;
-  //   event: CalendarEvent;
+  //   event: CalendarEventWithAppointment;
   // };
 
   // actions: CalendarEventAction[] = [
   //   {
   //     label: '<i class="fas fa-fw fa-pencil-alt"></i>',
   //     a11yLabel: 'Edit',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //     onClick: ({ event }: { event: CalendarEventWithAppointment }): void => {
   //       this.handleEvent('Edited', event);
   //     },
   //   },
   //   {
   //     label: '<i class="fas fa-fw fa-trash-alt"></i>',
   //     a11yLabel: 'Delete',
-  //     onClick: ({ event }: { event: CalendarEvent }): void => {
+  //     onClick: ({ event }: { event: CalendarEventWithAppointment }): void => {
   //       this.events = this.events.filter((iEvent) => iEvent !== event);
   //       this.handleEvent('Deleted', event);
   //     },
@@ -101,7 +104,7 @@ export class TimelineComponent implements OnInit {
 
 
 
-  // events: CalendarEvent[] = [
+  // events: CalendarEventWithAppointment[] = [
   //   {
   //     start: subDays(startOfDay(new Date()), 4),
   //     // end: addDays(new Date(), 1),
@@ -117,7 +120,7 @@ export class TimelineComponent implements OnInit {
   //   },
   //   {
   //     start: startOfDay(new Date()),
-  //     title: 'xxxxxxxxxxx',
+  //     title: 'erd ',
   //     color: { ...colors['yellow'] },
   //     // actions: this.actions,
   //   },
@@ -144,7 +147,7 @@ export class TimelineComponent implements OnInit {
 
 
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  dayClicked({ date, events }: { date: Date; events: CalendarEventWithAppointment[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -176,7 +179,7 @@ export class TimelineComponent implements OnInit {
     // this.handleEvent('Dropped or resized', event);
   }
 
-  // handleEvent(action: string, event: CalendarEvent): void {
+  // handleEvent(action: string, event: CalendarEventWithAppointment): void {
   //   // this.modalData = { event, action };
   // }
 
@@ -197,7 +200,7 @@ export class TimelineComponent implements OnInit {
   //   ];
   // }
 
-  // deleteEvent(eventToDelete: CalendarEvent) {
+  // deleteEvent(eventToDelete: CalendarEventWithAppointment) {
   //   this.events = this.events.filter((event) => event !== eventToDelete);
   // }
 
@@ -219,17 +222,17 @@ export class TimelineComponent implements OnInit {
 
   getAllAppointment(){
     this.appointmentService.getAppointments().subscribe(appointments => {
-      this.events = appointments.map(appointment => {
+      this.events = appointments.map(appoint => {
         // Splitting the time string into hours, minutes, and seconds
-        const timeParts = appointment.time.split(':');
+        const timeParts = appoint.time.split(':');
         const hours = parseInt(timeParts[0], 10); // Parsing hours as integer
         const minutes = parseInt(timeParts[1], 10); // Parsing minutes as integer
-        const type =appointment.type == 0 ? "Dépôt" : "Essayage" ;
-        const color =this.getTextColorEvent(appointment.status);
+        const type =appoint.type == 0 ? "Dépôt" : "Essayage" ;
+        const color =this.getTextColorEvent(appoint.status);
         console.log(color);
         
-        // Creating a new Date object with the appointment date and time
-        const start = new Date(appointment.date);
+        // Creating a new Date object with the appoint date and time
+        const start = new Date(appoint.date);
         start.setHours(hours, minutes); // Setting the hours and minutes
         
         // Adding 2 hours to the start time to get the end time
@@ -241,12 +244,14 @@ export class TimelineComponent implements OnInit {
           title: ` 
           <div class="text-containerEvent ${color}" >
             <p class="titleEvent ${color}">${type}</p>
-            <p class="nameEvent ${color}">${appointment.customer.name} ${appointment.customer.prenom}</p>
+            <p class="nameEvent ${color}">${appoint.customer.name} ${appoint.customer.prenom}</p>
           </div>
       `,
-          color: this.getBackgroundColorEvent(appointment.status),
+          color: this.getBackgroundColorEvent(appoint.status),
+          appointment:appoint,
           // allDay: true,
           // Add other properties as needed
+
         };
       });
     });
@@ -261,7 +266,15 @@ export class TimelineComponent implements OnInit {
       console.log('The dialog was closed', result);
     });
   }
-
+  eventClicked(event: CalendarEventWithAppointment): void {
+    console.log('Event clicked', event);
+    const dialogRef = this.dialog.open(On_event_clickComponent, {
+      panelClass: 'mat-container',data: { appointment:  event.appointment } });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getAllAppointment();
+      console.log('The dialog was closed', result);
+    });
+  }
 
   getBackgroundColorEvent(number: number): EventColor {
     switch (number) {
