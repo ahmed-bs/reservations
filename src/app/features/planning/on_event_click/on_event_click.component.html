@@ -16,46 +16,39 @@
     <div class="task-details  circular-input">
       <!-- <p class="task-description">{{ taskDescription }}</p> -->
 
+      <div *ngIf="!showReportForm" class="report-form">
+        <!-- <label for="note"><i class="icon">📝</i>Note</label> -->
+        <textarea class="form-field" [(ngModel)]="appointment.comment"></textarea>
+      </div>
+      
       <div *ngIf="showReportForm" class="report-form">
-        <!-- <label for="report-date">Report Date:</label>
-      <input id="report-date" type="date" [(ngModel)]="reportDate">
-      <label for="report-time">Report Time:</label>
-      <input id="report-time" type="time" [(ngModel)]="reportTime"> -->
-
-
-
-        <div class="form-field ">
+        <div class="form-field">
           <label for="hour"><i class="icon">🕒</i>Heure*</label>
-          <input matInput type="time" step="1" id="hour" formControlName="hour" value="16:32" min="10:00" max="19:00"
-            required>
-
+          <input matInput type="time" step="1" id="hour" [(ngModel)]="appointment.time" min="10:00" max="19:00" required>
         </div>
+      
         <div class="form-field">
           <label for="date"><i class="icon">📅</i>Date*</label>
-          <input matInput [matDatepicker]="picker" formControlName="date" required>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="appointment.date" required>
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </div>
-        
+      
         <div class="form-field">
           <label for="note"><i class="icon">📝</i>Note</label>
-          <textarea matInput placeholder="Add a note..." [(ngModel)]="taskNote"></textarea>
+          <textarea [(ngModel)]="appointment.comment"></textarea>
         </div>
+      
         <div class="dialog-actions">
           <button class="save-button" type="button" (click)="submitReport()">Reporter</button>
         </div>
       </div>
+      
       <!-- 
     <div class="circular-input"  > -->
-      <div *ngIf="!showReportForm" class="report-form">
-        <textarea class="form-field  " placeholder="Add a note..." [(ngModel)]="taskNote"></textarea>
-      </div>
+
     </div>
-    <!-- </div> -->
-
   </div>
-
-
   <!-- <script src="script.js"></script> -->
 </div>
 

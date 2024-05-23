@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { Appointment } from 'src/app/core/models/appointement';
+import { AppointmentService } from 'src/app/core/services/appointement.service';
 
 @Component({
   selector: 'app-on_event_click',
@@ -8,65 +10,78 @@ import { Appointment } from 'src/app/core/models/appointement';
   styleUrls: ['./on_event_click.component.css']
 })
 export class On_event_clickComponent implements OnInit {
-
-  constructor(
+  appointment!: Appointment;
+  constructor(   
+    private appointementService: AppointmentService, 
     public dialogRef: MatDialogRef<On_event_clickComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { appointment: Appointment }
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { appointment: Appointment },
+    
+  ) {
+    this.appointment=data.appointment;
+  }
 
   ngOnInit() {
+    this.appointment=this.data.appointment;
   }
-  taskTitle: string = 'Task Title';
-  taskDescription: string = 'Task description goes here...';
-  taskNote: string = '';
+
   showReportForm: boolean = false;
-  reportDate: string = '';
-  reportTime: string = '';
+  updateAppointment(id: number, appointment: Appointment): Observable<Appointment> {
+    return this.appointementService.updateAppointment(id, appointment);
+  }
 
   validateTask(): void {
-    alert('Task validated!');
-    // Implement your validation logic here
+    alert('Appointment validated!');
+    this.appointment.status=1;
+    this.updateAppointment(this.appointment.id, this.appointment).subscribe(
+      (updatedAppointment) => {
+        console.log('Appointment validated successfully', updatedAppointment);
+        this.dialogRef.close(updatedAppointment);
+      },
+      (error) => {
+        console.error('Error validated appointment', error);
+      }
+    );
   }
 
-  editTask(): void {
-    const newTitle = prompt('Edit task title:', this.taskTitle);
-    const newDescription = prompt('Edit task description:', this.taskDescription);
-    if (newTitle !== null) {
-      this.taskTitle = newTitle;
-    }
-    if (newDescription !== null) {
-      this.taskDescription = newDescription;
-    }
-  }
 
   toggleReport(): void {
     this.showReportForm = !this.showReportForm;
   }
 
   submitReport(): void {
-    const note = this.taskNote.trim();
-    const date = this.reportDate;
-    const time = this.reportTime;
-
-    if (!note) {
-      alert('Please add a note before reporting.');
-      return;
-    }
-
-    if (!date || !time) {
-      alert('Please select both a date and time for the report.');
-      return;
-    }
-
-    alert(`Task reported with note: ${note} on ${date} at ${time}`);
-    // Implement your reporting logic here
+    alert('Appointment reporeter!');
+    this.appointment.status=3;
+    this.updateAppointment(this.appointment.id, this.appointment).subscribe(
+      (updatedAppointment) => {
+        console.log('Appointment reporeter successfully', updatedAppointment);
+        this.dialogRef.close(updatedAppointment);
+      },
+      (error) => {
+        console.error('Error reporeter appointment', error);
+      }
+    );
   }
 
   annulTask(): void {
-    const confirmAnnul = confirm('Are you sure you want to annul this task?');
-    if (confirmAnnul) {
-      alert('Task annulled!');
-      // Implement your annul logic here
-    }
+    alert('Appointment anulated!');
+    this.appointment.status=2;
+    this.updateAppointment(this.appointment.id, this.appointment).subscribe(
+      (updatedAppointment) => {
+        console.log('Appointment anulated successfully', updatedAppointment);
+        this.dialogRef.close(updatedAppointment);
+      },
+      (error) => {
+        console.error('Error anulated appointment', error);
+      }
+    );
   }
+
+
+
+
+
+
+
+
+  
 }

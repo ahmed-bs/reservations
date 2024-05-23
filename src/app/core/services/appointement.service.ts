@@ -26,7 +26,7 @@ export class AppointmentService {
   }
 
   updateAppointment(id: number, appointment: Appointment): Observable<Appointment> {
-    return this.http.put<Appointment>(`${this.apiUrl}/${id}`, appointment);
+    return this.http.put<Appointment>(`${this.apiUrl}/UpdateAppointment?id=${id}`, appointment);
   }
 
   deleteAppointment(id: number): Observable<void> {

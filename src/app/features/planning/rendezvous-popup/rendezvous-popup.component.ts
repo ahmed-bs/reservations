@@ -80,7 +80,7 @@ export class RendezvousPopupComponent implements OnInit {
           prenom: formValue.name2,
           phone: formValue.tel
         },
-        status: 1,
+        status: 0,
         comment: formValue.note,
         purchase: true,
         deposit: true,

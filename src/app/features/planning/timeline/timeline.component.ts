@@ -34,23 +34,23 @@ import { CalendarEventWithAppointment } from 'src/app/core/models/calendar-event
 
 const colors: Record<string, EventColor> = {
   red: {
-    primary:'#B88065',
-    secondary:  '#fde0e0' ,
+    primary: '#B88065',
+    secondary: '#fde0e0',
   },
   green: {
     primary: '#71c08d',
     secondary: '#e0f8e0',
   },
   purple: {
-    primary:'#8269D1',
-    secondary: '#e0e0f8' ,
+    primary: '#8269D1',
+    secondary: '#e0e0f8',
   },
   // red: {
   //   primary: '#ad2121',
   //   secondary: '#FAE3E3',
   // },
   blue: {
-    primary:  '#1e90ff',
+    primary: '#1e90ff',
     secondary: '#D1E8FF',
   },
   yellow: {
@@ -76,9 +76,9 @@ export class TimelineComponent implements OnInit {
   viewDate: Date = new Date();
   activeDayIsOpen: boolean = false;
 
-  constructor(public dialog: MatDialog, private appointmentService: AppointmentService, ) {
+  constructor(public dialog: MatDialog, private appointmentService: AppointmentService,) {
     this.getAllAppointment();
-   }
+  }
   // modalData!: {
   //   action: string;
   //   event: CalendarEventWithAppointment;
@@ -220,24 +220,24 @@ export class TimelineComponent implements OnInit {
     this.getAllAppointment();
   }
 
-  getAllAppointment(){
+  getAllAppointment() {
     this.appointmentService.getAppointments().subscribe(appointments => {
       this.events = appointments.map(appoint => {
         // Splitting the time string into hours, minutes, and seconds
         const timeParts = appoint.time.split(':');
         const hours = parseInt(timeParts[0], 10); // Parsing hours as integer
         const minutes = parseInt(timeParts[1], 10); // Parsing minutes as integer
-        const type =appoint.type == 0 ? "Dépôt" : "Essayage" ;
-        const color =this.getTextColorEvent(appoint.status);
+        const type = appoint.type == 0 ? "Dépôt" : "Essayage";
+        const color = this.getTextColorEvent(appoint.status);
         console.log(color);
-        
+
         // Creating a new Date object with the appoint date and time
         const start = new Date(appoint.date);
         start.setHours(hours, minutes); // Setting the hours and minutes
-        
+
         // Adding 2 hours to the start time to get the end time
         const end = addHours(new Date(start), 2);
-        
+
         return {
           start,
           end,
@@ -248,7 +248,7 @@ export class TimelineComponent implements OnInit {
           </div>
       `,
           color: this.getBackgroundColorEvent(appoint.status),
-          appointment:appoint,
+          appointment: appoint,
           // allDay: true,
           // Add other properties as needed
 
@@ -269,7 +269,8 @@ export class TimelineComponent implements OnInit {
   eventClicked(event: CalendarEventWithAppointment): void {
     console.log('Event clicked', event);
     const dialogRef = this.dialog.open(On_event_clickComponent, {
-      panelClass: 'mat-container',data: { appointment:  event.appointment } });
+      panelClass: 'mat-container', data: { appointment: event.appointment }
+    });
     dialogRef.afterClosed().subscribe(result => {
       this.getAllAppointment();
       console.log('The dialog was closed', result);
@@ -279,31 +280,31 @@ export class TimelineComponent implements OnInit {
   getBackgroundColorEvent(number: number): EventColor {
     switch (number) {
       case 0:
-        return colors['yellow'];
+        return colors['purple'];
       case 1:
         return colors['green'];
       case 2:
         return colors['red'];
       case 3:
-        return colors['purple'];
+        return colors['yellow'];
       default:
-        return colors['blue']; 
+        return colors['blue'];
     }
   }
 
   getTextColorEvent(number: number): string {
-    
+
     switch (number) {
       case 0:
-        return 'yellowEvent';
+        return 'purpleEvent';
       case 1:
         return "greenEvent";
       case 2:
         return 'redEvent';
       case 3:
-        return 'purpleEvent';
+        return 'yellowEvent';
       default:
-        return 'blueEvent'; 
+        return 'blueEvent';
     }
   }
 
