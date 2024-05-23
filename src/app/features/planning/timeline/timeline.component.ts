@@ -269,6 +269,7 @@ export class TimelineComponent implements OnInit {
   eventClicked(event: CalendarEventWithAppointment): void {
     console.log('Event clicked', event);
     const dialogRef = this.dialog.open(On_event_clickComponent, {
+      width: '400px',
       panelClass: 'mat-container', data: { appointment: event.appointment }
     });
     dialogRef.afterClosed().subscribe(result => {

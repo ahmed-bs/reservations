@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { Appointment } from 'src/app/core/models/appointement';
 import { AppointmentService } from 'src/app/core/services/appointement.service';
@@ -12,6 +13,7 @@ import { AppointmentService } from 'src/app/core/services/appointement.service';
 export class On_event_clickComponent implements OnInit {
   appointment!: Appointment;
   constructor(   
+    private _snackBar: MatSnackBar,
     private appointementService: AppointmentService, 
     public dialogRef: MatDialogRef<On_event_clickComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { appointment: Appointment },
@@ -30,11 +32,14 @@ export class On_event_clickComponent implements OnInit {
   }
 
   validateTask(): void {
-    alert('Appointment validated!');
     this.appointment.status=1;
     this.updateAppointment(this.appointment.id, this.appointment).subscribe(
       (updatedAppointment) => {
-        console.log('Appointment validated successfully', updatedAppointment);
+        this._snackBar.open('Le rendez-vous est terminé.', 'OK', {
+          duration: 6000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
         this.dialogRef.close(updatedAppointment);
       },
       (error) => {
@@ -49,10 +54,14 @@ export class On_event_clickComponent implements OnInit {
   }
 
   submitReport(): void {
-    alert('Appointment reporeter!');
     this.appointment.status=3;
     this.updateAppointment(this.appointment.id, this.appointment).subscribe(
       (updatedAppointment) => {
+        this._snackBar.open('Le rendez-vous est reporté.', 'OK', {
+          duration: 6000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
         console.log('Appointment reporeter successfully', updatedAppointment);
         this.dialogRef.close(updatedAppointment);
       },
@@ -63,10 +72,14 @@ export class On_event_clickComponent implements OnInit {
   }
 
   annulTask(): void {
-    alert('Appointment anulated!');
     this.appointment.status=2;
     this.updateAppointment(this.appointment.id, this.appointment).subscribe(
       (updatedAppointment) => {
+        this._snackBar.open('Le rendez-vous est annulé.', 'OK', {
+          duration: 6000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
         console.log('Appointment anulated successfully', updatedAppointment);
         this.dialogRef.close(updatedAppointment);
       },

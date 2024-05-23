@@ -1,4 +1,4 @@
-<h3>Ajouter un événement</h3>
+<h3>Créer un Rendez-Vous</h3>
 
 <div class="dialog-content">
   <form [formGroup]="eventForm" style="zoom: 80%;" (ngSubmit)="onSave()">
@@ -41,14 +41,15 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </div>
-      <div   style="color: red;font: 1em sans-serif;"    *ngIf="hour?.invalid && (hour!.dirty || hour!.touched)">
-        <div *ngIf="hour?.errors?.['required']">
-          Time is required.
-        </div>
+      <div style="color: red; font: 1em sans-serif;" *ngIf="hour?.invalid && (hour!.dirty || hour!.touched)">
+        <!-- <div *ngIf="hour?.errors?.['required']">
+            L'heure est requise.
+        </div> -->
         <div *ngIf="hour?.errors?.['timeRange']">
-          Time must be between 10:00 and 19:00.
+            L'heure doit être comprise entre 10:00 et 19:00.
         </div>
-      </div>
+    </div>
+    
     </div>
   
 

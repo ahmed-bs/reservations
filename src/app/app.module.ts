@@ -12,6 +12,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { LOCALE_ID } from '@angular/core';
+
+registerLocaleData(localeFr, 'fr');
+
+
+
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogActions, MatDialogClose, MatDialogContent, MatDialogModule, MatDialogTitle } from '@angular/material/dialog';
@@ -29,7 +37,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 @NgModule({
 
-  imports: [ MatDialogModule,
+  imports: [ 
+    MatDialogModule,
     BrowserModule,
     CommonModule, 
     AppRoutingModule,
@@ -41,7 +50,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatMenuTrigger,
     MatMenuModule,
     MatButtonModule,
-     MatInputModule,
+    MatInputModule,
     MatListModule,
     MatChipListbox,
     MatSelectModule,
@@ -60,7 +69,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   declarations: [
     AppComponent,SidebarComponent,HeaderComponent,MainComponent
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'fr' }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

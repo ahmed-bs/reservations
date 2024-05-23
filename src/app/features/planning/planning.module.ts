@@ -29,7 +29,8 @@ import { On_event_clickComponent } from './on_event_click/on_event_click.compone
 
 @NgModule({
   imports: [
-    FormsModule, ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     PlanningRoutes,
     HttpClientModule,
