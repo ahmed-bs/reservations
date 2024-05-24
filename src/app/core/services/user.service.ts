@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
+import { endPoint } from '../utils/endpoint';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'https://your-api-url/users'; // Replace with your API URL
+  private apiUrl = endPoint.Api +'api/User'; 
 
   constructor(private http: HttpClient) {}
 

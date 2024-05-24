@@ -64,15 +64,24 @@ export class RendezvousPopupComponent implements OnInit {
     if (this.eventForm.valid) {
       const formValue = this.eventForm.value;
       let time = formValue.hour;
+
+      const hours = parseInt(time[0], 10);
+      const minutes = parseInt(time[1], 10);
+  
+      const date = new Date(formValue.date);
+      date.setHours(hours);
+      date.setMinutes(minutes);
+
+
+
       if (time.length === 5) {
-        // Adding seconds if they are not present
         time = `${time}:00`;
       }
       this.dialogRef.close(this.eventForm.value);
       const appointment: Appointment = {
         id: 0,
         type: formValue.type ,
-        date: new Date(formValue.date),
+        date: date,
         time: time,
         customer: {
           id: 0,

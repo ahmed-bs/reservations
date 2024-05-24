@@ -22,6 +22,7 @@ export class AppointmentService {
   }
 
   createAppointment(appointment: Appointment): Observable<Appointment> {
+    debugger
     return this.http.post<Appointment>(this.apiUrl+'/AddAppointment', appointment);
   }
 
