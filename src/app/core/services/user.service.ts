@@ -14,7 +14,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl);
+    return this.http.get<User[]>(`${this.apiUrl}/Get_AllUsers`);
   }
 
   getUser(id: number): Observable<User> {
@@ -22,7 +22,7 @@ export class UserService {
   }
 
   createUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, user);
+    return this.http.post<User>(`${this.apiUrl}/AddUser`, user);
   }
 
   updateUser(id: number, user: User): Observable<User> {
