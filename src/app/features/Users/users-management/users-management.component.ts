@@ -7,6 +7,8 @@ import { UserService } from 'src/app/core/services/user.service';
 import { AddUserPopupComponent } from '../add-user-popup/add-user-popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateUserComponent } from '../update-user/update-user.component';
+import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-users-management',
@@ -22,7 +24,7 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(public dialog: MatDialog, private userService: UserService) {}
+  constructor(public dialog: MatDialog, private userService: UserService,private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.getAllUsers();
@@ -85,19 +87,49 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  deleteUser(userId: number) {
-    console.log("clicked here");
-    this.userService.deleteUser(userId).subscribe(
-      response => {
-        console.log('User deleted successfully', response);
-        this.getAllUsers(); 
-      },
-      error => {
-        console.error('There was an error!', error);
-      }
-    );
-  }
 
+
+
+
+  
+  deleteUser(userId: number) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '250px',
+      data: { message: 'Êtes-vous sûr de vouloir supprimer cet utilisateur?' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Confirmed');
+        this.userService.deleteUser(userId).subscribe(
+          response => {
+            console.log('User deleted successfully', response);
+            this._snackBar.open('Utilisateur supprimé avec succès.', 'OK', {
+              duration: 4000,
+              horizontalPosition: 'right',
+              verticalPosition: 'bottom',
+            });
+            this.getAllUsers();
+          },
+          error => {
+            this._snackBar.open('Erreur lors de la suppression de l\'utilisateur.', 'OK', {
+              duration: 4000,
+              horizontalPosition: 'right',
+              verticalPosition: 'bottom',
+            });
+            console.error('There was an error!', error);
+          }
+        );
+      } else {
+        console.log('Cancelled');
+        this._snackBar.open('Suppression annulée.', 'OK', {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
+      }
+    });
+  }
 
 
 }

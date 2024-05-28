@@ -1,0 +1,26 @@
+.cancel-button,
+.save-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  outline: none;
+  margin-left: 8px;
+}
+
+.cancel-button {
+  background-color: transparent;
+  color: black;
+}
+
+.save-button {
+  background-color: rgb(71, 71, 255);
+  color: white;
+} 
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+    padding: 20px;
+  }

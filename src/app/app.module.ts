@@ -35,6 +35,7 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatMenuTrigger, MatMenuModule} from '@angular/material/menu';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ConfirmationDialogComponent } from './shared/confirmation-dialog/confirmation-dialog.component';
 @NgModule({
 
   imports: [ 
@@ -67,7 +68,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
   declarations: [
-    AppComponent,SidebarComponent,HeaderComponent,MainComponent
+    AppComponent,SidebarComponent,HeaderComponent,MainComponent,ConfirmationDialogComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr' }
