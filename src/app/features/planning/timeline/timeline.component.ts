@@ -29,7 +29,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { RendezvousPopupComponent } from '../rendezvous-popup/rendezvous-popup.component';
 import { AppointmentService } from 'src/app/core/services/appointement.service';
 import { On_event_clickComponent } from '../on_event_click/on_event_click.component';
-import { Appointment } from 'src/app/core/models/appointement';
 import { CalendarEventWithAppointment } from 'src/app/core/models/calendar-event ';
 
 const colors: Record<string, EventColor> = {

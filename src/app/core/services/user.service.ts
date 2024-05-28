@@ -1,6 +1,6 @@
 // src/app/services/user.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { endPoint } from '../utils/endpoint';
@@ -29,7 +29,8 @@ export class UserService {
     return this.http.put<User>(`${this.apiUrl}/${id}`, user);
   }
 
-  deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteUser(userId: number): Observable<any> {
+    const params = new HttpParams().set('id', userId.toString());
+    return this.http.delete<any>(`${this.apiUrl}/DeleteUser`, { params });
   }
 }

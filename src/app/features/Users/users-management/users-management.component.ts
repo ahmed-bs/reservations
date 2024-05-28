@@ -4,6 +4,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { User } from 'src/app/core/models/user';
 import { UserService } from 'src/app/core/services/user.service';
+import { AddUserPopupComponent } from '../add-user-popup/add-user-popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-users-management',
@@ -19,7 +21,7 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private userService: UserService) {}
+  constructor(public dialog: MatDialog, private userService: UserService) {}
 
   ngOnInit() {
     this.getAllUsers();
@@ -59,4 +61,30 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
       this.dataSource.sort = this.sort;
     });
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AddUserPopupComponent, {
+      width: '470px',
+    });
+    dialogRef.afterClosed().subscribe(async result => {
+      await this.getAllUsers();
+      console.log('The dialog was closed', result);
+    });
+  }
+
+  deleteUser(userId: number) {
+    console.log("clicked here");
+    this.userService.deleteUser(userId).subscribe(
+      response => {
+        console.log('User deleted successfully', response);
+        this.getAllUsers(); 
+      },
+      error => {
+        console.error('There was an error!', error);
+      }
+    );
+  }
+
+
+
 }

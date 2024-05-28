@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { UsersManagementComponent } from './users-management/users-management.component';
 import { MatIconModule } from '@angular/material/icon';
+import { AddUserPopupComponent } from './add-user-popup/add-user-popup.component';
 
 @NgModule({
   imports: [
@@ -32,6 +33,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatButtonModule,
   ],
-  declarations: [UsersComponent,UsersManagementComponent]
+  declarations: [UsersComponent,UsersManagementComponent,AddUserPopupComponent]
 })
 export class UsersModule { }
