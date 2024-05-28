@@ -1,6 +1,6 @@
 // src/app/services/user.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { endPoint } from '../utils/endpoint';
@@ -25,10 +25,12 @@ export class UserService {
     return this.http.post<User>(`${this.apiUrl}/AddUser`, user);
   }
 
-  updateUser(id: number, user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+  updateUser(user: User, id: number): Observable<any> {
+    const url = `${this.apiUrl}/UpdateUser?id=${id}`;
+    return this.http.put(url, user, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    });
   }
-
   deleteUser(userId: number): Observable<any> {
     const params = new HttpParams().set('id', userId.toString());
     return this.http.delete<any>(`${this.apiUrl}/DeleteUser`, { params });

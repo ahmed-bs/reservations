@@ -11,13 +11,9 @@ import { UserService } from 'src/app/core/services/user.service';
   styleUrls: ['./add-user-popup.component.css']
 })
 export class AddUserPopupComponent implements OnInit {
-
-  selectedRole!: number ;
-
+  selectedRole!: number;
   eventForm!: FormGroup;
 
-
-  
   constructor(
     private _snackBar: MatSnackBar,
     private userService: UserService,
@@ -25,23 +21,22 @@ export class AddUserPopupComponent implements OnInit {
     private fb: FormBuilder
   ) {}
 
-
   ngOnInit(): void {
     this.eventForm = this.fb.group({
       name: ['', Validators.required],
       role: ['', Validators.required],
       password: ['', Validators.required],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
     });
 
     this.eventForm.controls['role'].setValue(this.selectedRole);
   }
+
   selectRole(role: number): void {
     this.selectedRole = role;
     this.eventForm.patchValue({ role });
     this.eventForm.controls['role'].setValue(role);
   }
-
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -52,22 +47,19 @@ export class AddUserPopupComponent implements OnInit {
     if (this.eventForm.valid) {
       const formValue = this.eventForm.value;
       console.log(formValue);
-      
 
-      this.dialogRef.close(this.eventForm.value);
       const user: User = {
         id: 0,
-        name: formValue.name ,
+        name: formValue.name,
         email: formValue.email,
         password: formValue.password,
         role: formValue.role,
       };
 
       this.userService.createUser(user).subscribe({
-        
         next: (response) => {
-          console.log('User created successfully:', response);
-          this._snackBar.open('User created successfully', 'OK', {
+          console.log('Utilisateur créé avec succès:', response);
+          this._snackBar.open('Utilisateur créé avec succès', 'OK', {
             duration: 4000,
             horizontalPosition: 'right',
             verticalPosition: 'bottom',
@@ -75,23 +67,21 @@ export class AddUserPopupComponent implements OnInit {
           this.dialogRef.close(this.eventForm.value);
         },
         error: (error) => {
-          this._snackBar.open('Error creating user', 'OK', {
+          this._snackBar.open('Erreur lors de la création de l\'utilisateur', 'OK', {
             duration: 4000,
             horizontalPosition: 'right',
             verticalPosition: 'bottom',
           });
-          console.error('Error creating user:', error);
+          console.error('Erreur lors de la création de l\'utilisateur:', error);
         }
       });
     } else {
-      this._snackBar.open('Form is invalid', 'OK', {
+      this._snackBar.open('Le formulaire est invalide', 'OK', {
         duration: 4000,
         horizontalPosition: 'right',
         verticalPosition: 'bottom',
       });
-      console.warn('Form is invalid');
+      console.warn('Le formulaire est invalide');
     }
   }
-
-
 }

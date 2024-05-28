@@ -13,6 +13,7 @@ import { AppointmentService } from 'src/app/core/services/appointement.service';
 export class On_event_clickComponent implements OnInit {
   appointment!: Appointment;
   originalAppointment!: Appointment;
+
   constructor(
     private _snackBar: MatSnackBar,
     private appointementService: AppointmentService,
@@ -35,6 +36,7 @@ export class On_event_clickComponent implements OnInit {
   }
 
   showReportForm: boolean = false;
+
   updateAppointment(id: number, appointment: Appointment): Observable<Appointment> {
     return this.appointementService.updateAppointment(id, appointment);
   }
@@ -64,24 +66,29 @@ export class On_event_clickComponent implements OnInit {
       comment: this.appointment.comment,
       purchase: true,
       deposit: true,
-      customerId:this.appointment.customerId,
+      customerId: this.appointment.customerId,
       userId: 1,
     };
-      this.updateAppointment(appointmenter.id, appointmenter).subscribe(
-        (updatedAppointment) => {
-          this._snackBar.open('Le rendez-vous est terminé.', 'OK', {
-            duration: 6000,
-            horizontalPosition: 'right',
-            verticalPosition: 'bottom',
-          });
-          this.dialogRef.close(updatedAppointment);
-        },
-        (error) => {
-          console.error('Error validated appointment', error);
-        }
-      );
-  }
 
+    this.updateAppointment(appointmenter.id, appointmenter).subscribe(
+      (updatedAppointment) => {
+        this._snackBar.open('Le rendez-vous est terminé.', 'OK', {
+          duration: 6000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
+        this.dialogRef.close(updatedAppointment);
+      },
+      (error) => {
+        this._snackBar.open('Erreur lors de la validation du rendez-vous', 'OK', {
+          duration: 6000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
+        console.error('Erreur lors de la validation du rendez-vous', error);
+      }
+    );
+  }
 
   toggleReport(): void {
     this.showReportForm = !this.showReportForm;
@@ -112,30 +119,35 @@ export class On_event_clickComponent implements OnInit {
       comment: this.originalAppointment.comment,
       purchase: true,
       deposit: true,
-      customerId:this.originalAppointment.customerId,
+      customerId: this.originalAppointment.customerId,
       userId: 1,
     };
-      this.updateAppointment(appointmenter.id, appointmenter).subscribe(
-        (updatedAppointment) => {
 
-          if (this.CreateTask() == "200") {
-            this._snackBar.open('Le rendez-vous est reporté.', 'OK', {
-              duration: 6000,
-              horizontalPosition: 'right',
-              verticalPosition: 'bottom',
-            });
-            console.log('Appointment reporeter successfully', updatedAppointment);
-            this.dialogRef.close(updatedAppointment);
-          }
-
-        },
-        (error) => {
-          console.error('Error reporeter appointment', error);
+    this.updateAppointment(appointmenter.id, appointmenter).subscribe(
+      (updatedAppointment) => {
+        if (this.CreateTask() == "200") {
+          this._snackBar.open('Le rendez-vous est reporté.', 'OK', {
+            duration: 6000,
+            horizontalPosition: 'right',
+            verticalPosition: 'bottom',
+          });
+          console.log('Rendez-vous reporté avec succès', updatedAppointment);
+          this.dialogRef.close(updatedAppointment);
         }
-      );
-    
+      },
+      (error) => {
+        this._snackBar.open('Erreur lors du report du rendez-vous', 'OK', {
+          duration: 6000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
+        console.error('Erreur lors du report du rendez-vous', error);
+      }
+    );
   }
-  annulTask(): void { let time = this.appointment.time;
+
+  annulTask(): void {
+    let time = this.appointment.time;
 
     const hours = parseInt(time[0], 10);
     const minutes = parseInt(time[1], 10);
@@ -159,33 +171,32 @@ export class On_event_clickComponent implements OnInit {
       comment: this.appointment.comment,
       purchase: true,
       deposit: true,
-      customerId:this.appointment.customerId,
+      customerId: this.appointment.customerId,
       userId: 1,
     };
-    
-      this.updateAppointment(appointmenter.id, appointmenter).subscribe(
-        (updatedAppointment) => {
-          this._snackBar.open('Le rendez-vous est annulé.', 'OK', {
-            duration: 6000,
-            horizontalPosition: 'right',
-            verticalPosition: 'bottom',
-          });
-          console.log('Appointment anulated successfully', updatedAppointment);
-          this.dialogRef.close(updatedAppointment);
-        },
-        (error) => {
-          console.error('Error anulated appointment', error);
-        }
-      );
+
+    this.updateAppointment(appointmenter.id, appointmenter).subscribe(
+      (updatedAppointment) => {
+        this._snackBar.open('Le rendez-vous est annulé.', 'OK', {
+          duration: 6000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
+        console.log('Rendez-vous annulé avec succès', updatedAppointment);
+        this.dialogRef.close(updatedAppointment);
+      },
+      (error) => {
+        this._snackBar.open('Erreur lors de l\'annulation du rendez-vous', 'OK', {
+          duration: 6000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
+        console.error('Erreur lors de l\'annulation du rendez-vous', error);
+      }
+    );
   }
 
-
-
-
-
-
   CreateTask(): string {
-
     let time = this.appointment.time;
 
     const hours = parseInt(time[0], 10);
@@ -194,7 +205,6 @@ export class On_event_clickComponent implements OnInit {
     const date = new Date(this.appointment.date);
     date.setHours(hours);
     date.setMinutes(minutes);
-
 
     const appointmenter: Appointment = {
       id: 0,
@@ -214,20 +224,22 @@ export class On_event_clickComponent implements OnInit {
       customerId: 0,
       userId: 1,
     };
+
     this.appointementService.createAppointment(appointmenter).subscribe({
       next: (response) => {
-        console.log('Appointment created successfully:', response);
-        return "200"
+        console.log('Rendez-vous créé avec succès:', response);
+        return "200";
       },
       error: (error) => {
-        console.error('Error creating appointment:', error);
-        return "200"
+        this._snackBar.open('Erreur lors de la création du rendez-vous', 'OK', {
+          duration: 6000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
+        console.error('Erreur lors de la création du rendez-vous:', error);
+        return "500";
       }
     });
-    return "200"
+    return "200";
   }
-
-
-
-
 }

@@ -46,7 +46,7 @@
         <ng-container matColumnDef="actions">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <button mat-icon-button>
+            <button mat-icon-button (click)="openEditDialog(element)">
               <i class='bx bx-edit-alt'></i>
             </button>
             <button mat-icon-button (click)="deleteUser(element.id)">

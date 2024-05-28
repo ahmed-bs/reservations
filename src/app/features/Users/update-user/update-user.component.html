@@ -1,3 +1,41 @@
-<p>
-  update-user works!
-</p>
+<h3>Mettre à jour l'utilisateur</h3>
+
+<div class="dialog-content">
+  <form [formGroup]="updateForm" style="zoom: 80%;" (ngSubmit)="onSave()">
+    <div class="form-group">
+      <div class="form-field half-width circular-input">
+        <label for="name"><i class="icon">🪪</i>Nom*</label>
+        <input id="name" type="text" formControlName="name" required>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-field half-width circular-input">
+        <label><i class="icon">☑️</i>Rôle*</label>
+        <div class="btn-group">
+          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedRole == 0}" (click)="selectRole(0)">
+            Vendeuse
+          </button>
+          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedRole == 1}" (click)="selectRole(1)">
+            Admin
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field full-width circular-input" appearance="outline">
+      <label for="email"><i class="icon">☎️</i>Email*</label>
+      <input id="email" type="email" formControlName="email" required>
+    </div>
+
+    <div class="form-field full-width circular-input">
+      <label for="password"><i class="icon">📝</i>Mot de passe</label>
+      <textarea id="password" formControlName="password" required></textarea>
+    </div>
+
+    <div class="dialog-actions">
+      <button class="cancel-button" type="button" (click)="onNoClick()">Annuler</button>
+      <button class="save-button" type="submit">Sauvegarder</button>
+    </div>
+  </form>
+</div>

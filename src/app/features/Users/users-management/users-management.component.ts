@@ -6,6 +6,7 @@ import { User } from 'src/app/core/models/user';
 import { UserService } from 'src/app/core/services/user.service';
 import { AddUserPopupComponent } from '../add-user-popup/add-user-popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { UpdateUserComponent } from '../update-user/update-user.component';
 
 @Component({
   selector: 'app-users-management',
@@ -72,6 +73,18 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
     });
   }
 
+  openEditDialog(user: User): void {
+    const dialogRef = this.dialog.open(UpdateUserComponent, {
+      width: '400px',
+      data: user
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getAllUsers();
+      }
+    });
+  }
   deleteUser(userId: number) {
     console.log("clicked here");
     this.userService.deleteUser(userId).subscribe(
