@@ -2,6 +2,11 @@ import { Component, ElementRef, HostListener, OnInit, Renderer2 } from '@angular
 import { Subscription, filter } from 'rxjs';
 import { SharedService } from '../shared.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -10,7 +15,7 @@ import { NavigationEnd, Router } from '@angular/router';
 export class SidebarComponent implements OnInit {
   sideLinks!: NodeListOf<HTMLAnchorElement>;
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private router: Router) {}
+  constructor(    private _snackBar: MatSnackBar,public dialog: MatDialog, private authService: AuthService,private elementRef: ElementRef, private renderer: Renderer2, private router: Router) {}
 
   ngOnInit() {}
 
@@ -48,6 +53,45 @@ export class SidebarComponent implements OnInit {
   }
 
 
+
+
+
+
+  Logout(): void {
+
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '250px',
+      data: { message: 'Êtes-vous sûr de vouloir Déconnecter?' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Confirmed');
+        this.authService.logout().subscribe(
+          (response: any) => {
+            console.log(response);
+            localStorage.setItem('token', '');
+            window.location.reload();
+            this._snackBar.open('Déconnecter.', 'OK', {
+              duration: 4000,
+              horizontalPosition: 'right',
+              verticalPosition: 'bottom',
+            });
+          },
+          (error: HttpErrorResponse) => {
+        
+          }
+        );
+      } else {
+        console.log('Cancelled');
+        this._snackBar.open('Déconnection annulée.', 'OK', {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'bottom',
+        });
+      }
+    });
+  }
 
 
 }

@@ -143,6 +143,7 @@ export class TimelineComponent implements OnInit {
           <div class="text-containerEvent ${color}" >
             <p class="titleEvent ${color}">${type}</p>
             <p class="nameEvent ${color}">${appoint.customer.name} ${appoint.customer.prenom}</p>
+            <p class="nameEvent ${color}">${appoint.customer.phone}</p>
           </div>
       `,
           color: this.getBackgroundColorEvent(appoint.status),
