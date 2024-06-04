@@ -169,7 +169,25 @@ input[type=time]::-webkit-clear-button {
   display: none;
 }
 
+input + span {
+  padding-right: 30px;
+}
+
 /* Up/Down arrows for incrementing/decrementing the value */
 input[type=time]::-webkit-inner-spin-button {
   display: none;
+}
+
+
+
+input:invalid + span::after {
+  position: absolute;
+  content: "✖";
+  padding-left: 5px;
+}
+
+input:valid + span::after {
+  position: absolute;
+  content: "✓";
+  padding-left: 5px;
 }

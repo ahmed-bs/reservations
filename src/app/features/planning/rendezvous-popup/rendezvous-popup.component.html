@@ -30,9 +30,8 @@
     <div class="form-group">
       <div class="form-field half-width circular-input">
         <label for="hour"><i class="icon">🕒</i>Heure*</label>
-        <input matInput type="time"  id="hour" formControlName="hour"
-      required>
-   
+        <input matInput type="time" id="hour" formControlName="hour" min="10:00" max="19:00" required>
+        <span class="validity"></span>
       </div>
 
       <div class="form-field half-width circular-input">
@@ -46,12 +45,12 @@
             L'heure est requise.
         </div> -->
         <div *ngIf="hour?.errors?.['timeRange']">
-            L'heure doit être comprise entre 10:00 et 19:00.
+          L'heure doit être comprise entre 10:00 et 19:00.
         </div>
+      </div>
+
     </div>
-    
-    </div>
-  
+
 
 
     <div class="form-field full-width circular-input" appearance="outline">

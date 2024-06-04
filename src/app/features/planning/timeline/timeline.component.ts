@@ -155,7 +155,7 @@ export class TimelineComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(RendezvousPopupComponent, {
-      width: '470px',
+      width: '510px',
     });
     dialogRef.afterClosed().subscribe(async result => {
       await this.getAllAppointment();

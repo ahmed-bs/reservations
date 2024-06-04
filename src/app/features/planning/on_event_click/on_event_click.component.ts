@@ -101,6 +101,8 @@ export class On_event_clickComponent implements OnInit {
     const minutes = parseInt(time[1], 10);
 
     const date = new Date(this.originalAppointment.date);
+    console.log(date);
+    
     date.setHours(hours);
     date.setMinutes(minutes);
 
