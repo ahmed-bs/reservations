@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe(
         (response: any) => {
-          console.log(response);
+          console.log('token : ',response);
           this._snackBar.open('Connexion réussie', 'OK', {
             duration: 4000,
             horizontalPosition: 'right',

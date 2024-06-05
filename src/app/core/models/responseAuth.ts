@@ -1,7 +1,7 @@
-interface AuthenticateResponse {
-    Token: string;
+export class AuthenticateResponse {
+    Token!: string;
     Expires?: Date;
-    CurrentUserId: number;
-    Role: string;
-    Message: string;
+    CurrentUserId!: number;
+    Role!: string;
+    Message?: string;
   }

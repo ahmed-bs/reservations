@@ -4,7 +4,7 @@
 </a>
 <ul class="side-menu">
     <li class="active"><a routerLink="/"><i class='bx bx-calendar'></i>Calendrier</a></li>
-    <li><a routerLink="/users-management"><i class='bx bx-group'></i>Utilisateurs</a></li>
+    <li *ngIf="userService.isAdmin()"><a routerLink="/users-management"><i class='bx bx-group'></i>Utilisateurs</a></li>
 </ul>
 <ul class="side-menu">
     <li>

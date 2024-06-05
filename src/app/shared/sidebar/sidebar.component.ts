@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from 'src/app/core/services/user.service';
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -15,7 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class SidebarComponent implements OnInit {
   sideLinks!: NodeListOf<HTMLAnchorElement>;
 
-  constructor(    private _snackBar: MatSnackBar,public dialog: MatDialog, private authService: AuthService,private elementRef: ElementRef, private renderer: Renderer2, private router: Router) {}
+  constructor(public userService: UserService,private _snackBar: MatSnackBar,public dialog: MatDialog, private authService: AuthService,private elementRef: ElementRef, private renderer: Renderer2, private router: Router) {}
 
   ngOnInit() {}
 
