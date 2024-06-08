@@ -6,7 +6,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TimelineComponent } from './timeline/timeline.component';
-import { RendezvousPopupComponent } from './rendezvous-popup/rendezvous-popup.component';
+import { ReservationPopupComponent } from './rendezvous-popup/resevation-popup.component';
 import { MatButtonModule } from '@angular/material/button';
 
 
@@ -50,7 +50,7 @@ import { On_event_clickComponent } from './on_event_click/on_event_click.compone
     MatSnackBarModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
-  declarations: [PlanningComponent, TimelineComponent, RendezvousPopupComponent,On_event_clickComponent]
+  declarations: [PlanningComponent, TimelineComponent, ReservationPopupComponent,On_event_clickComponent]
 })
 export class PlanningModule { }
 

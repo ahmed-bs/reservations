@@ -1,30 +1,11 @@
-<h3>Créer un Rendez-Vous</h3>
-
+<h3>Créer un Reservation</h3>
 <div class="dialog-content">
   <form [formGroup]="eventForm" style="zoom: 80%;" (ngSubmit)="onSave()">
-    <div class="form-group">
-      <div class="form-field half-width circular-input">
-        <label for="name1"><i class="icon">🪪</i>Nom*</label>
-        <input id="name1" type="text" formControlName="name1" required>
-      </div>
-      <div class="form-field half-width circular-input">
-        <label for="name2"><i class="icon">🪪</i>Prénom*</label>
-        <input id="name2" type="text" formControlName="name2" required>
-      </div>
-    </div>
-
-    <div class="form-group col-md-4">
-      <div class="form-field half-width circular-input">
-        <label><i class="icon">☑️</i>Type*</label>
-        <div class="btn-group">
-          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedType == 0}" (click)="selectType(0)">
-            Dépôt
-          </button>
-          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedType == 1}" (click)="selectType(1)">
-            Essayage
-          </button>
-        </div>
-      </div>
+    <div class="form-field full-width circular-input">
+      <label for="SalleId"><i class="icon">🪪</i>Choisir une Salle*</label>
+      <select id="SalleId" formControlName="SalleId" required>
+        <option *ngFor="let salle of Salle_DATA" [value]="salle._id">{{ salle.SalleName }} {{ salle.SalleNumber }}</option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -51,13 +32,14 @@
 
     </div>
 
+    <div class="form-field full-width circular-input">
+      <label for="UserId"><i class="icon">🪪</i>Choisir une Utilisateurs*</label>
+      <select id="UserId" formControlName="UserId" required>
+          <option *ngFor="let user of USER_DATA" [value]="user._id">{{ user.name }}</option>
+      </select>
+  </div>
 
-
-    <div class="form-field full-width circular-input" appearance="outline">
-      <label for="tel"><i class="icon">☎️</i>Téléphone*</label>
-      <input id="tel" type="tel" formControlName="tel" required>
-    </div>
-
+  
     <div class="form-field full-width circular-input">
       <label for="note"><i class="icon">📝</i>Note</label>
       <textarea id="note" formControlName="note" required></textarea>

@@ -1,6 +1,6 @@
 import { CalendarEvent } from 'angular-calendar';
-import { Appointment } from './appointement';
+import { Reservation } from './Reservation';
 
-export interface CalendarEventWithAppointment extends CalendarEvent {
-  appointment?: Appointment;
+export interface CalendarEventWithReservation extends CalendarEvent {
+ reservation?: Reservation;
 }

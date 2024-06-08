@@ -11,7 +11,7 @@ import { UserService } from 'src/app/core/services/user.service';
   styleUrls: ['./add-user-popup.component.css']
 })
 export class AddUserPopupComponent implements OnInit {
-  selectedRole!: number;
+  selectedRole!: string;
   eventForm!: FormGroup;
 
   constructor(
@@ -32,8 +32,8 @@ export class AddUserPopupComponent implements OnInit {
     this.eventForm.controls['role'].setValue(this.selectedRole);
   }
 
-  selectRole(role: number): void {
-    this.selectedRole = role;
+  selectRole(role: string): void {
+    this.selectedRole = '';
     this.eventForm.patchValue({ role });
     this.eventForm.controls['role'].setValue(role);
   }
@@ -49,7 +49,7 @@ export class AddUserPopupComponent implements OnInit {
       console.log(formValue);
 
       const user: User = {
-        id: 0,
+     
         name: formValue.name,
         email: formValue.email,
         password: formValue.password,

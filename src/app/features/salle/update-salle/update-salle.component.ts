@@ -2,23 +2,23 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserService } from 'src/app/core/services/user.service';
+import { SalleService } from 'src/app/core/services/salle.service';
 
 @Component({
-  selector: 'app-update-user',
-  templateUrl: './update-user.component.html',
-  styleUrls: ['./update-user.component.css']
+  selector: 'app-update-salle',
+  templateUrl: './update-salle.component.html',
+  styleUrls: ['./update-salle.component.css']
 })
-export class UpdateUserComponent implements OnInit {
+export class UpdateSalleComponent implements OnInit {
 
   updateForm!: FormGroup;
   selectedRole: string;
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
+    private userService: SalleService,
     private _snackBar: MatSnackBar,
-    public dialogRef: MatDialogRef<UpdateUserComponent>,
+    public dialogRef: MatDialogRef<UpdateSalleComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.selectedRole = data.role;
@@ -27,9 +27,8 @@ export class UpdateUserComponent implements OnInit {
   ngOnInit() {
 
     this.updateForm = this.fb.group({
-      name: [this.data.name, Validators.required],
-      email: [this.data.email, [Validators.required, Validators.email]],
-      password: [this.data.password, Validators.required],
+      SalleName: ['', Validators.required],
+      SalleNumber: ['', Validators.required],
     });
     console.log(this.updateForm);
     
@@ -41,21 +40,21 @@ export class UpdateUserComponent implements OnInit {
 
   onSave() {
     if (this.updateForm.valid) {
-      const updatedUser = {
+      const updatedSalle = {
         ...this.data,
         ...this.updateForm.value,
         role: this.selectedRole
       };
 
-      this.userService.updateUser(updatedUser, updatedUser._id.toString()).subscribe(
+      this.userService.updateSalle(updatedSalle, updatedSalle._id.toString()).subscribe(
         response => {
-          console.log('User updated successfully', response);
-          this._snackBar.open('Utilisateur mis à jour avec succès.', 'OK', {
+          console.log('Salle updated successfully', response);
+          this._snackBar.open('Salle mis à jour avec succès.', 'OK', {
             duration: 4000,
             horizontalPosition: 'right',
             verticalPosition: 'bottom',
           });
-          this.dialogRef.close(updatedUser);
+          this.dialogRef.close(updatedSalle);
         },
         error => {
           console.error('There was an error!', error);

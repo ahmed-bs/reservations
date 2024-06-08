@@ -7,7 +7,21 @@ import { endPoint } from '../utils/endpoint';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = endPoint.Api +'api/Account'; 
+  private baseUrl = endPoint.Api +'api/login'; 
+
+
+
+
+
+
+
+  // login(email: string, password: string): Observable<any> {
+  //   const body = { email, password };
+  //   return this.http.post<any>(this.loginUrl, body);
+  // }
+
+
+
 
   constructor(private http: HttpClient) { }
 

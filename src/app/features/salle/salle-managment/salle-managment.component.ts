@@ -1,33 +1,33 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { User } from 'src/app/core/models/user';
-import { UserService } from 'src/app/core/services/user.service';
-import { AddUserPopupComponent } from '../add-user-popup/add-user-popup.component';
-import { MatDialog } from '@angular/material/dialog';
-import { UpdateUserComponent } from '../update-user/update-user.component';
+import { Salle } from 'src/app/core/models/salle';
+import { SalleService } from 'src/app/core/services/salle.service';
+import { AddSallePopupComponent } from '../add-salle-popup/add-salle-popup.component';
+import { UpdateSalleComponent } from '../update-salle/update-salle.component';
 import { ConfirmationDialogComponent } from 'src/app/shared/confirmation-dialog/confirmation-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-users-management',
-  templateUrl: './users-management.component.html',
-  styleUrls: ['./users-management.component.css']
+  selector: 'app-salle-managment',
+  templateUrl: './salle-managment.component.html',
+  styleUrls: ['./salle-managment.component.css']
 })
-export class UsersManagementComponent implements OnInit, AfterViewInit {
-  USER_DATA: User[] = [];
+export class SalleManagmentComponent implements OnInit {
+  Salle_DATA: Salle[] = [];
   displayedColumns: string[] = ['name', 'email', 'actions'];
-  dataSource = new MatTableDataSource<User>(this.USER_DATA);
-  newUser!: User;
+  dataSource = new MatTableDataSource<Salle>(this.Salle_DATA);
+  newSalle!: Salle;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(public dialog: MatDialog, private userService: UserService,private _snackBar: MatSnackBar) {}
+  constructor(public dialog: MatDialog, private salleService: SalleService,private _snackBar: MatSnackBar) {}
 
   ngOnInit() {
-    this.getAllUsers();
+    this.getAllSalles();
   }
 
   ngAfterViewInit() {
@@ -44,11 +44,11 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
     }
   }
 
-  addUser() {
-    this.userService.createUser(this.newUser).subscribe(
+  addSalle() {
+    this.salleService.createSalle(this.newSalle).subscribe(
       response => {
-        console.log('User added successfully', response);
-        this.getAllUsers();
+        console.log('Salle added successfully', response);
+        this.getAllSalles();
       },
       error => {
         console.error('There was an error!', error);
@@ -56,34 +56,34 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
     );
   }
 
-  getAllUsers() {
-    this.userService.getUsers().subscribe(users => {
-      this.USER_DATA = users;
-      this.dataSource.data = this.USER_DATA;
+  getAllSalles() {
+    this.salleService.getSalles().subscribe(salles => {
+      this.Salle_DATA = salles;
+      this.dataSource.data = this.Salle_DATA;
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(AddUserPopupComponent, {
+    const dialogRef = this.dialog.open(AddSallePopupComponent, {
       width: '470px',
     });
     dialogRef.afterClosed().subscribe(async result => {
-      await this.getAllUsers();
+      await this.getAllSalles();
       console.log('The dialog was closed', result);
     });
   }
 
-  openEditDialog(user: User): void {
-    const dialogRef = this.dialog.open(UpdateUserComponent, {
+  openEditDialog(salle: Salle): void {
+    const dialogRef = this.dialog.open(UpdateSalleComponent, {
       width: '400px',
-      data: user
+      data: salle
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getAllUsers();
+        this.getAllSalles();
       }
     });
   }
@@ -92,27 +92,27 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
 
 
   
-  deleteUser(userId: number) {
+  deleteSalle(salleId: string) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '250px',
-      data: { message: 'Êtes-vous sûr de vouloir supprimer cet utilisateur?' }
+      data: { message: 'Êtes-vous sûr de vouloir supprimer cet salle?' }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Confirmed');
-        this.userService.deleteUser(userId.toString()).subscribe(
+        this.salleService.deleteSalle(salleId).subscribe(
           response => {
-            console.log('User deleted successfully', response);
-            this._snackBar.open('Utilisateur supprimé avec succès.', 'OK', {
+            console.log('Salle deleted successfully', response);
+            this._snackBar.open('Salle supprimé avec succès.', 'OK', {
               duration: 4000,
               horizontalPosition: 'right',
               verticalPosition: 'bottom',
             });
-            this.getAllUsers();
+            this.getAllSalles();
           },
           error => {
-            this._snackBar.open('Erreur lors de la suppression de l\'utilisateur.', 'OK', {
+            this._snackBar.open('Erreur lors de la suppression de l\'salle.', 'OK', {
               duration: 4000,
               horizontalPosition: 'right',
               verticalPosition: 'bottom',

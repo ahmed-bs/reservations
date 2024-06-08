@@ -10,34 +10,44 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = endPoint.Api +'api/User'; 
+  private apiUrl = endPoint.Api +'api/users'; 
 
   constructor(private http: HttpClient) {
     this.loadUserRole();
   }
 
+
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}/Get_AllUsers`);
+    return this.http.get<User[]>(this.apiUrl);
   }
 
   getUser(id: number): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
+
+  
+
   createUser(user: User): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/AddUser`, user);
+  
+    return this.http.post<User>(this.apiUrl, user);
   }
 
-  updateUser(user: User, id: number): Observable<any> {
-    const url = `${this.apiUrl}/UpdateUser?id=${id}`;
-    return this.http.put(url, user, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    });
+
+
+  updateUser(_id: string, user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${_id}`, user);
   }
-  deleteUser(userId: number): Observable<any> {
-    const params = new HttpParams().set('id', userId.toString());
-    return this.http.delete<any>(`${this.apiUrl}/DeleteUser`, { params });
+
+
+  deleteUser(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+
+
+
+
 
 
 
@@ -59,4 +69,5 @@ export class UserService {
   public isAdmin(): boolean {
     return this.userRole === 'Admin';
   }
+
 }

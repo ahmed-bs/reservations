@@ -1,0 +1,22 @@
+<h3>Mettre à jour l'utilisateur</h3>
+
+<div class="dialog-content">
+  <form [formGroup]="updateForm" style="zoom: 80%;" (ngSubmit)="onSave()">
+    <div class="form-group">
+      <div class="form-field half-width circular-input">
+        <label for="SalleName"><i class="icon">🪪</i>Salle Name*</label>
+        <input id="SalleName" type="text" formControlName="SalleName" required>
+      </div>
+      <div class="form-field half-width circular-input">
+        <label for="SalleNumber"><i class="icon">📝</i>Salle Number</label>
+        <input id="SalleNumber" type="text" formControlName="SalleNumber" required>
+      </div>
+    </div>
+
+
+    <div class="dialog-actions">
+      <button class="cancel-button" type="button" (click)="onNoClick()">Annuler</button>
+      <button class="save-button" type="submit">Sauvegarder</button>
+    </div>
+  </form>
+</div>

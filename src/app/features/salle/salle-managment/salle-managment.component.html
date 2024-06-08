@@ -1,0 +1,62 @@
+<main>
+  <!-- <app-rendezvous-popup *ngIf="showPopup" (closePopup)="closePopup()"></app-rendezvous-popup> -->
+  <div class="bottom-data">
+    <div class="orders">
+      <!-- <div class="header">
+              <i class='bx bx-receipt'></i>
+              <h3>Recent Orders</h3>
+              <i class='bx bx-filter'></i>
+              <i class='bx bx-search'></i>
+          </div> -->
+      <div class="header">
+        <div class="left">
+          <ul class="breadcrumb">
+            <li><a href="#">
+                Accueil
+              </a></li>
+            /
+            <li><a href="#" class="active">Salles</a></li>
+          </ul>
+        </div>
+        <a class="report" (click)="openDialog()">
+          <i class='bx bx-plus'></i>
+        </a>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Filtrer</mat-label>
+          <input matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
+      </div>
+
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+        <!-- Colonne Nom -->
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Nom Salle</mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.SalleName}} </mat-cell>
+        </ng-container>
+        <!-- Colonne Email -->
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Numero Salle </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.SalleNumber}} </mat-cell>
+        </ng-container>
+
+        <!-- Colonne Actions -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="openEditDialog(element)">
+              <i class='bx bx-edit-alt'></i>
+            </button>
+            <button mat-icon-button (click)="deleteSalle(element._id)">
+              <i class='bx bx-trash'></i>
+            </button></mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+  <br />
+</main>

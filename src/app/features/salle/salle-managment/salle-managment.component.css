@@ -1,0 +1,39 @@
+
+.table-container {
+    overflow: auto;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .mat-header-cell, .mat-cell {
+    text-align: left;
+    vertical-align: middle; /* Ensure that content is vertically centered */
+    padding: 8px; /* Add some padding for better spacing */
+  }
+  
+  .mat-row {
+    height: 48px; /* Ensure rows have a consistent height */
+  }
+  
+  .mat-header-row {
+    height: 48px; /* Ensure header row has a consistent height */
+  }
+  
+  th.mat-header-cell {
+    font-weight: bold;
+  }
+  
+  td.mat-cell {
+    white-space: nowrap; /* Prevent text wrapping */
+  }
+  
+  .mat-icon-button {
+    padding: 0;
+  }
+  
+  .mat-paginator {
+    margin-top: 10px;
+  }
+  

@@ -2,8 +2,8 @@ import { Component, Inject, OnInit, SimpleChanges } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { Appointment } from 'src/app/core/models/appointement';
-import { AppointmentService } from 'src/app/core/services/appointement.service';
+import { Reservation } from 'src/app/core/models/Reservation';
+import { ReservationService } from 'src/app/core/services/reservation.service';
 
 @Component({
   selector: 'app-on_event_click',
@@ -11,73 +11,66 @@ import { AppointmentService } from 'src/app/core/services/appointement.service';
   styleUrls: ['./on_event_click.component.css']
 })
 export class On_event_clickComponent implements OnInit {
-  appointment!: Appointment;
-  originalAppointment!: Appointment;
+  reservation!: Reservation;
+  originalReservation!: Reservation;
 
   constructor(
     private _snackBar: MatSnackBar,
-    private appointementService: AppointmentService,
+    private reservationService: ReservationService,
     public dialogRef: MatDialogRef<On_event_clickComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { appointment: Appointment }
+    @Inject(MAT_DIALOG_DATA) public data: { reservation: Reservation }
   ) {
-    this.appointment = { ...data.appointment, date: new Date(data.appointment.date) };
-    this.originalAppointment = { ...data.appointment, date: new Date(data.appointment.date) };
+    this.reservation = { ...data.reservation, Date: new Date(data.reservation.Date) };
+    this.originalReservation = { ...data.reservation, Date: new Date(data.reservation.Date) };
   }
 
   ngOnInit() {
-    this.appointment = { ...this.data.appointment, date: new Date(this.data.appointment.date) };
-    this.originalAppointment = { ...this.data.appointment, date: new Date(this.data.appointment.date) };
+    this.reservation = { ...this.data.reservation, Date: new Date(this.data.reservation.Date) };
+    this.originalReservation = { ...this.data.reservation, Date: new Date(this.data.reservation.Date) };
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['data']) {
-      this.appointment = { ...this.data.appointment, date: new Date(this.data.appointment.date) };
+      this.reservation = { ...this.data.reservation, Date: new Date(this.data.reservation.Date) };
     }
   }
 
   showReportForm: boolean = false;
 
-  updateAppointment(id: number, appointment: Appointment): Observable<Appointment> {
-    return this.appointementService.updateAppointment(id, appointment);
+  updateReservation(id: number, reservation: Reservation): Observable<Reservation> {
+    return this.reservationService.updateReservation(id, reservation);
   }
 
   validateTask(): void {
-    let time = this.appointment.time;
+    let time = this.reservation.Time;
 
     const hours = parseInt(time[0], 10);
     const minutes = parseInt(time[1], 10);
 
-    const date = new Date(this.appointment.date);
+    const date = new Date(this.reservation.Date);
     date.setHours(hours);
     date.setMinutes(minutes);
 
-    const appointmenter: Appointment = {
-      id: this.appointment.id,
-      type: this.appointment.type,
-      date: date,
-      time: this.appointment.time,
-      customer: {
-        id: this.appointment.customerId,
-        name: this.appointment.customer.name,
-        prenom: this.appointment.customer.prenom,
-        phone: this.appointment.customer.phone
-      },
-      status: 1,
-      comment: this.appointment.comment,
-      purchase: true,
-      deposit: true,
-      customerId: this.appointment.customerId,
-      userId: 1,
+    const reservationer: Reservation = {
+      _id: this.reservation._id,
+      Date: date,
+      Time: this.reservation.Time,
+
+      Status: 1,
+     Comment: this.reservation.Comment,
+
+      SalleId: this.reservation.SalleId,
+      UserId: '1',
     };
 
-    this.updateAppointment(appointmenter.id, appointmenter).subscribe(
-      (updatedAppointment) => {
+    this.updateReservation(reservationer._id!, reservationer).subscribe(
+      (updatedReservation) => {
         this._snackBar.open('Le rendez-vous est terminé.', 'OK', {
           duration: 6000,
           horizontalPosition: 'right',
           verticalPosition: 'bottom',
         });
-        this.dialogRef.close(updatedAppointment);
+        this.dialogRef.close(updatedReservation);
       },
       (error) => {
         this._snackBar.open('Erreur lors de la validation du rendez-vous', 'OK', {
@@ -95,46 +88,40 @@ export class On_event_clickComponent implements OnInit {
   }
 
   submitReport(): void {
-    let time = this.originalAppointment.time;
+    let time = this.originalReservation.Time;
 
     const hours = parseInt(time[0], 10);
     const minutes = parseInt(time[1], 10);
 
-    const date = new Date(this.originalAppointment.date);
+    const date = new Date(this.originalReservation.Date);
     console.log(date);
     
     date.setHours(hours);
     date.setMinutes(minutes);
 
-    const appointmenter: Appointment = {
-      id: this.originalAppointment.id,
-      type: this.originalAppointment.type,
-      date: date,
-      time: this.originalAppointment.time,
-      customer: {
-        id: this.originalAppointment.customerId,
-        name: this.originalAppointment.customer.name,
-        prenom: this.originalAppointment.customer.prenom,
-        phone: this.originalAppointment.customer.phone
-      },
-      status: 3,
-      comment: this.originalAppointment.comment,
-      purchase: true,
-      deposit: true,
-      customerId: this.originalAppointment.customerId,
-      userId: 1,
+    const reservationer: Reservation = {
+      _id: this.originalReservation._id,
+    
+      Date: date,
+      Time: this.originalReservation.Time,
+
+      Status: 3,
+      Comment: this.originalReservation.Comment,
+
+      SalleId: this.originalReservation.SalleId,
+      UserId: '1',
     };
 
-    this.updateAppointment(appointmenter.id, appointmenter).subscribe(
-      (updatedAppointment) => {
+    this.updateReservation(reservationer._id!, reservationer).subscribe(
+      (updatedReservation) => {
         if (this.CreateTask() == "200") {
           this._snackBar.open('Le rendez-vous est reporté.', 'OK', {
             duration: 6000,
             horizontalPosition: 'right',
             verticalPosition: 'bottom',
           });
-          console.log('Rendez-vous reporté avec succès', updatedAppointment);
-          this.dialogRef.close(updatedAppointment);
+          console.log('Rendez-vous reporté avec succès', updatedReservation);
+          this.dialogRef.close(updatedReservation);
         }
       },
       (error) => {
@@ -149,43 +136,35 @@ export class On_event_clickComponent implements OnInit {
   }
 
   annulTask(): void {
-    let time = this.appointment.time;
+    let time = this.reservation.Time;
 
     const hours = parseInt(time[0], 10);
     const minutes = parseInt(time[1], 10);
 
-    const date = new Date(this.appointment.date);
+    const date = new Date(this.reservation.Date);
     date.setHours(hours);
     date.setMinutes(minutes);
 
-    const appointmenter: Appointment = {
-      id: this.appointment.id,
-      type: this.appointment.type,
-      date: date,
-      time: this.appointment.time,
-      customer: {
-        id: this.appointment.customerId,
-        name: this.appointment.customer.name,
-        prenom: this.appointment.customer.prenom,
-        phone: this.appointment.customer.phone
-      },
-      status: 2,
-      comment: this.appointment.comment,
-      purchase: true,
-      deposit: true,
-      customerId: this.appointment.customerId,
-      userId: 1,
+    const reservationer: Reservation = {
+      _id: this.reservation._id,
+      Date: date,
+      Time: this.reservation.Time,
+
+     Status: 2,
+      Comment: this.reservation.Comment,
+      SalleId: this.reservation.SalleId,
+      UserId:"1",
     };
 
-    this.updateAppointment(appointmenter.id, appointmenter).subscribe(
-      (updatedAppointment) => {
+    this.updateReservation(reservationer._id!, reservationer).subscribe(
+      (updatedReservation) => {
         this._snackBar.open('Le rendez-vous est annulé.', 'OK', {
           duration: 6000,
           horizontalPosition: 'right',
           verticalPosition: 'bottom',
         });
-        console.log('Rendez-vous annulé avec succès', updatedAppointment);
-        this.dialogRef.close(updatedAppointment);
+        console.log('Rendez-vous annulé avec succès', updatedReservation);
+        this.dialogRef.close(updatedReservation);
       },
       (error) => {
         this._snackBar.open('Erreur lors de l\'annulation du rendez-vous', 'OK', {
@@ -199,35 +178,27 @@ export class On_event_clickComponent implements OnInit {
   }
 
   CreateTask(): string {
-    let time = this.appointment.time;
+    let time = this.reservation.Time;
 
     const hours = parseInt(time[0], 10);
     const minutes = parseInt(time[1], 10);
 
-    const date = new Date(this.appointment.date);
+    const date = new Date(this.reservation.Date);
     date.setHours(hours);
     date.setMinutes(minutes);
 
-    const appointmenter: Appointment = {
-      id: 0,
-      type: this.originalAppointment.type,
-      date: date,
-      time: this.appointment.time,
-      customer: {
-        id: 0,
-        name: this.appointment.customer.name,
-        prenom: this.appointment.customer.prenom,
-        phone: this.appointment.customer.phone
-      },
-      status: 0,
-      comment: this.appointment.comment,
-      purchase: true,
-      deposit: true,
-      customerId: 0,
-      userId: 1,
+    const reservationer: Reservation = {
+      _id:0,
+      Date: date,
+      Time: this.reservation.Time,
+      Status: 0,
+      Comment: this.reservation.Comment,
+
+      SalleId:'',
+      UserId:'1',
     };
 
-    this.appointementService.createAppointment(appointmenter).subscribe({
+    this.reservationService.createReservation(reservationer).subscribe({
       next: (response) => {
         console.log('Rendez-vous créé avec succès:', response);
         return "200";

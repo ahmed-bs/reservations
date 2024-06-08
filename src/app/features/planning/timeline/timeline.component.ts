@@ -26,10 +26,10 @@ import {
 } from 'angular-calendar';
 import { EventColor } from 'calendar-utils';
 import { MatDialog } from '@angular/material/dialog';
-import { RendezvousPopupComponent } from '../rendezvous-popup/rendezvous-popup.component';
-import { AppointmentService } from 'src/app/core/services/appointement.service';
+import { ReservationPopupComponent } from '../rendezvous-popup/resevation-popup.component';
 import { On_event_clickComponent } from '../on_event_click/on_event_click.component';
-import { CalendarEventWithAppointment } from 'src/app/core/models/calendar-event ';
+import { CalendarEventWithReservation } from 'src/app/core/models/calendar-event ';
+import { ReservationService } from 'src/app/core/services/reservation.service';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -66,17 +66,17 @@ const colors: Record<string, EventColor> = {
 })
 export class TimelineComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
-  events!: CalendarEventWithAppointment[];
+  events!: CalendarEventWithReservation[];
   CalendarView = CalendarView;
   refresh = new Subject<void>();
   viewDate: Date = new Date();
   activeDayIsOpen: boolean = false;
 
-  constructor(public dialog: MatDialog, private appointmentService: AppointmentService,) {
-    this.getAllAppointment();
+  constructor(public dialog: MatDialog, private reservationService: ReservationService,) {
+    this.getAllreservation();
   }
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEventWithAppointment[] }): void {
+  dayClicked({ date, events }: { date: Date; events: CalendarEventWithReservation[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -121,19 +121,18 @@ export class TimelineComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getAllAppointment();
+    this.getAllreservation();
   }
 
-  getAllAppointment() {
-    this.appointmentService.getAppointments().subscribe(async appointments => {
-      this.events =await appointments.map(appoint => {
-        const timeParts = appoint.time.split(':');
+  getAllreservation() {
+    this.reservationService.getAllReservations().subscribe(async reservations => {
+      this.events =await reservations.map(resvation => {
+        const timeParts = resvation.Time.split(':');
         const hours = parseInt(timeParts[0], 10);
         const minutes = parseInt(timeParts[1], 10);
-        const type = appoint.type == 0 ? "Dépôt" : "Essayage";
-        const color = this.getTextColorEvent(appoint.status);
+        const color = this.getTextColorEvent(resvation.Status);
         console.log(color);
-        const start = new Date(appoint.date);
+        const start = new Date(resvation.Date);
         start.setHours(hours, minutes);
         const end = addHours(new Date(start), 2);
         return {
@@ -141,37 +140,37 @@ export class TimelineComponent implements OnInit {
           end,
           title: ` 
           <div class="text-containerEvent ${color}" >
-            <p class="titleEvent ${color}">${type}</p>
-            <p class="nameEvent ${color}">${appoint.customer.name} ${appoint.customer.prenom}</p>
-            <p class="nameEvent ${color}">${appoint.customer.phone}</p>
+        
+            <p class="nameEvent ${color}">${resvation.Salle?.SalleName} ${resvation.Salle?.SalleNumber}</p>
+            <p class="nameEvent ${color}">${resvation.User?.name}</p>
           </div>
       `,
-          color: this.getBackgroundColorEvent(appoint.status),
-          appointment: appoint,
+          color: this.getBackgroundColorEvent(resvation.Status),
+          reservation: resvation,
         };
       });
     });
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(RendezvousPopupComponent, {
+    const dialogRef = this.dialog.open(ReservationPopupComponent, {
       width: '510px',
     });
     dialogRef.afterClosed().subscribe(async result => {
-      await this.getAllAppointment();
+      await this.getAllreservation();
       console.log('The dialog was closed', result);
     });
   }
 
-  eventClicked(event: CalendarEventWithAppointment): void {
-    if (event.appointment?.status == 0) {
+  eventClicked(event: CalendarEventWithReservation): void {
+    if (event.reservation?.Status == 0) {
       console.log('Event clicked', event);
       const dialogRef = this.dialog.open(On_event_clickComponent, {
         width: '400px',
-        panelClass: 'mat-container', data: { appointment: event.appointment }
+        panelClass: 'mat-container', data: { reservation: event.reservation }
       });
       dialogRef.afterClosed().subscribe(async result => {
-        await this.getAllAppointment();
+        await this.getAllreservation();
         console.log('The dialog was closed', result);
       });
     }

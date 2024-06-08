@@ -13,10 +13,10 @@
       <div class="form-field half-width circular-input">
         <label><i class="icon">☑️</i>Rôle*</label>
         <div class="btn-group">
-          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedRole == 0}" (click)="selectRole(0)">
-            Vendeuse
+          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedRole == 'Admin'}" (click)="selectRole('Admin')">
+            User
           </button>
-          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedRole == 1}" (click)="selectRole(1)">
+          <button type="button" class="circle-btn" [ngClass]="{'selected': selectedRole == 'User'}" (click)="selectRole('User')">
             Admin
           </button>
         </div>

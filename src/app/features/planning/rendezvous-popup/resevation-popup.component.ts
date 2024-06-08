@@ -3,49 +3,63 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { timeRangeValidator } from 'src/app/core/interceptors/time-range-validator';
-import { Appointment } from 'src/app/core/models/appointement';
-import { Customer } from 'src/app/core/models/customer';
-import { AppointmentService } from 'src/app/core/services/appointement.service';
+import { Reservation } from 'src/app/core/models/Reservation';
+import { Salle } from 'src/app/core/models/salle';
+import { User } from 'src/app/core/models/user';
+import { ReservationService } from 'src/app/core/services/reservation.service';
+import { SalleService } from 'src/app/core/services/salle.service';
+import { UserService } from 'src/app/core/services/user.service';
+
 
 @Component({
-  selector: 'app-rendezvous-popup',
-  templateUrl: './rendezvous-popup.component.html',
-  styleUrls: ['./rendezvous-popup.component.css']
+  selector: 'app-resevation-popup',
+  templateUrl: './resevation-popup.component.html',
+  styleUrls: ['./resevation-popup.component.css']
 })
-export class RendezvousPopupComponent implements OnInit {
+export class ReservationPopupComponent implements OnInit {
   selectedType!: number;
-
+  Salle_DATA : Salle[]=[];
+  USER_DATA: User[]=[];
   eventForm!: FormGroup;
   hours: number[] = Array.from({ length: 24 }, (_, i) => i);
   minutes: number[] = Array.from({ length: 60 }, (_, i) => i);
-  AppointmentType: any;
+  ReservationType: any;
 
   constructor(
+    private userService: UserService,
+    private salleService: SalleService,
     private _snackBar: MatSnackBar,
-    private appointementService: AppointmentService,
-    private dialogRef: MatDialogRef<RendezvousPopupComponent>,
+    private reservationService: ReservationService,
+    private dialogRef: MatDialogRef<ReservationPopupComponent>,
     private fb: FormBuilder
   ) {}
 
+
+  getAllSalles() {
+    this.salleService.getSalles().subscribe(salles => {
+      this.Salle_DATA = salles;
+    });
+  }
+
+  getAllUsers() {
+    this.userService.getUsers().subscribe(users => {
+      this.USER_DATA = users;
+    });
+  }
+
+
   ngOnInit(): void {
+    this.getAllUsers();
+    this.getAllSalles();
     this.eventForm = this.fb.group({
-      name1: ['', Validators.required],
-      name2: ['', Validators.required],
-      type: ['', Validators.required],
+      SalleId: ['', Validators.required],
       date: [new Date(), Validators.required],
       hour: [null, [Validators.required, timeRangeValidator('10:00', '19:00')]],
-      tel: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      UserId: ['', Validators.required],
       note: ['']
     });
-
-    this.eventForm.controls['type'].setValue(this.selectedType);
   }
 
-  selectType(type: number): void {
-    this.selectedType = type;
-    this.eventForm.patchValue({ type });
-    this.eventForm.controls['type'].setValue(type);
-  }
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -67,28 +81,19 @@ export class RendezvousPopupComponent implements OnInit {
         time = `${time}:00`;
       }
       this.dialogRef.close(this.eventForm.value);
-      const appointment: Appointment = {
-        id: 0,
-        type: formValue.type,
-        date: date,
-        time: time,
-        customer: {
-          id: 0,
-          name: formValue.name1,
-          prenom: formValue.name2,
-          phone: formValue.tel
-        },
-        status: 0,
-        comment: formValue.note,
-        purchase: true,
-        deposit: true,
-        customerId: 0,
-        userId: 1,
+      const reservation: Reservation = {
+
+        Date: date,
+        Time: time,
+        Status: 0,
+        Comment: formValue.note,
+        SalleId: formValue.SalleId,
+        UserId: formValue.userId,
       };
 
-      this.appointementService.createAppointment(appointment).subscribe({
+      this.reservationService.createReservation(reservation).subscribe({
         next: (response) => {
-          console.log('Appointment created successfully:', response);
+          console.log('Reservation created successfully:', response);
           this._snackBar.open('Rendez-vous créé avec succès', 'OK', {
             duration: 4000,
             horizontalPosition: 'right',
@@ -97,12 +102,12 @@ export class RendezvousPopupComponent implements OnInit {
           this.dialogRef.close(this.eventForm.value);
         },
         error: (error) => {
-          this._snackBar.open('Erreur lors de la création du rendez-vous', 'OK', {
+          this._snackBar.open('Erreur lors de la création du reservation', 'OK', {
             duration: 4000,
             horizontalPosition: 'right',
             verticalPosition: 'bottom',
           });
-          console.error('Erreur lors de la création du rendez-vous:', error);
+          console.error('Erreur lors de la création du reservation:', error);
         }
       });
     } else {

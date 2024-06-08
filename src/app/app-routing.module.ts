@@ -11,8 +11,11 @@ const routes: Routes = [
     component: LayoutComponent,
     
     children: [
-      { path: '',canActivate: [AuthGuard],  loadChildren: () => import('./features/planning/planning.module').then(m => m.PlanningModule) },
-      { path: 'users-management',canActivate: [RoleGuard],  loadChildren: () => import('./features/Users/Users.module').then(m => m.UsersModule) },
+      { path: '', loadChildren: () => import('./features/planning/planning.module').then(m => m.PlanningModule) },
+      { path: 'users-management',  loadChildren: () => import('./features/Users/Users.module').then(m => m.UsersModule) },
+      { path: 'salle',  loadChildren: () => import('./features/salle/salle.module').then(m => m.SalleModule) },
+      // { path: '',canActivate: [AuthGuard],  loadChildren: () => import('./features/planning/planning.module').then(m => m.PlanningModule) },
+      // { path: 'users-management',canActivate: [RoleGuard],  loadChildren: () => import('./features/Users/Users.module').then(m => m.UsersModule) },
     ]
   },
   { path: 'login', component: LoginComponent },

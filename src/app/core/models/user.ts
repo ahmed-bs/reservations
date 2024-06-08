@@ -1,15 +1,8 @@
-// src/app/models/user.model.ts
+export class User {
+  _id?:number;
+  name!: string;
+  email!: string;
+  password!: string;
+  role!: 'User' | 'Admin';
 
-export enum Role {
-    Vendeuse = 'Vendeuse',
-    Admin = 'Admin'
-  }
-  
-  export class User {
-    id!: number;
-    name!: string;
-    email!: string;
-    password!: string;
-    role!: Role;
-  }
-  
+}
