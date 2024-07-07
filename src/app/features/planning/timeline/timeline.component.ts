@@ -1,26 +1,15 @@
 import {
   Component,
-  ChangeDetectionStrategy,
-  ViewChild,
-  TemplateRef,
-  OnDestroy,
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
 import {
-  startOfDay,
-  endOfDay,
-  subDays,
-  addDays,
-  endOfMonth,
   isSameDay,
   isSameMonth,
   addHours,
 } from 'date-fns';
 import { Subject } from 'rxjs';
 import {
-  CalendarEvent,
-  CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarView,
 } from 'angular-calendar';
@@ -31,6 +20,7 @@ import { On_event_clickComponent } from '../on_event_click/on_event_click.compon
 import { CalendarEventWithReservation } from 'src/app/core/models/calendar-event ';
 import { ReservationService } from 'src/app/core/services/reservation.service';
 
+// Colors for different event statuses
 const colors: Record<string, EventColor> = {
   red: {
     primary: '#B88065',
@@ -44,10 +34,6 @@ const colors: Record<string, EventColor> = {
     primary: '#8269D1',
     secondary: '#e0e0f8',
   },
-  // red: {
-  //   primary: '#ad2121',
-  //   secondary: '#FAE3E3',
-  // },
   blue: {
     primary: '#1e90ff',
     secondary: '#D1E8FF',
@@ -65,36 +51,41 @@ const colors: Record<string, EventColor> = {
   styleUrls: ['./timeline.component.css']
 })
 export class TimelineComponent implements OnInit {
+  // Initial view of the calendar
   view: CalendarView = CalendarView.Month;
+
+  // Array to hold calendar events with reservation details
   events!: CalendarEventWithReservation[];
+
+  // Available calendar views
   CalendarView = CalendarView;
+
+  // Subject for refreshing the calendar
   refresh = new Subject<void>();
+
+  // Date currently selected in the calendar
   viewDate: Date = new Date();
+
+  // Flag to track if the day view is open
   activeDayIsOpen: boolean = false;
 
-  constructor(public dialog: MatDialog, private reservationService: ReservationService,) {
+  constructor(public dialog: MatDialog, private reservationService: ReservationService) {
+    // Fetch reservations on component initialization
     this.getAllreservation();
   }
 
+  // Function to handle day click event in the calendar
   dayClicked({ date, events }: { date: Date; events: CalendarEventWithReservation[] }): void {
     if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-      this.viewDate = date;
+      // Toggle the day view open/close if it's the same month
+      this.activeDayIsOpen = (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) || events.length === 0 ? false : true;
+      this.viewDate = date; // Update the selected date
     }
   }
 
-  eventTimesChanged({
-    event,
-    newStart,
-    newEnd,
-  }: CalendarEventTimesChangedEvent): void {
+  // Function to handle event time changes in the calendar
+  eventTimesChanged({ event, newStart, newEnd }: CalendarEventTimesChangedEvent): void {
+    // Update the event times in the events array
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
         return {
@@ -107,77 +98,77 @@ export class TimelineComponent implements OnInit {
     });
   }
 
-
+  // Function to change the calendar view
   setView(view: CalendarView) {
     this.view = view;
   }
 
+  // Function to open the month view day
   closeOpenMonthViewDay() {
     this.activeDayIsOpen = true;
   }
 
-
-
-
-
+  // Lifecycle hook called after Angular initializes the component
   ngOnInit(): void {
-    this.getAllreservation();
+    this.getAllreservation(); // Fetch reservations on component initialization
   }
 
+  // Function to fetch all reservations
   getAllreservation() {
     this.reservationService.getAllReservations().subscribe(async reservations => {
-      this.events =await reservations.map(resvation => {
-        const timeParts = resvation.Time.split(':');
+      // Map reservations to calendar events
+      this.events = await reservations.map(reservation => {
+        const timeParts = reservation.Time.split(':');
         const hours = parseInt(timeParts[0], 10);
         const minutes = parseInt(timeParts[1], 10);
-        const color = this.getTextColorEvent(resvation.Status);
-        console.log(color);
-        const start = new Date(resvation.Date);
+        const color = this.getTextColorEvent(reservation.Status); // Get text color based on reservation status
+        const start = new Date(reservation.Date);
         start.setHours(hours, minutes);
         const end = addHours(new Date(start), 2);
         return {
           start,
           end,
-          title: ` 
-          <div class="text-containerEvent ${color}" >
-        
-            <p class="nameEvent ${color}">${resvation.Salle?.SalleName} ${resvation.Salle?.SalleNumber}</p>
-            <p class="nameEvent ${color}">${resvation.User?.name}</p>
-          </div>
-      `,
-          color: this.getBackgroundColorEvent(resvation.Status),
-          reservation: resvation,
+          title: `<div class="text-containerEvent ${color}">
+                    <p class="nameEvent ${color}">${reservation.Salle?.SalleName} ${reservation.Salle?.SalleNumber}</p>
+                    <p class="nameEvent ${color}">${reservation.User?.name}</p>
+                  </div>`,
+          color: this.getBackgroundColorEvent(reservation.Status), // Get background color based on reservation status
+          reservation: reservation, // Store the reservation object
         };
       });
     });
   }
 
+  // Function to open a dialog for adding new reservations
   openDialog(): void {
     const dialogRef = this.dialog.open(ReservationPopupComponent, {
       width: '510px',
     });
     dialogRef.afterClosed().subscribe(async result => {
-      await this.getAllreservation();
+      await this.getAllreservation(); // Refresh reservations after dialog is closed
       console.log('The dialog was closed', result);
     });
-    this.getAllreservation();
+    this.getAllreservation(); // Refresh reservations
   }
 
+  // Function to handle click events on calendar events
   eventClicked(event: CalendarEventWithReservation): void {
-    if (event.reservation?.Status == 0) {
+    if (event.reservation?.Status == 0) { // Check if event status is pending
       console.log('Event clicked', event);
       const dialogRef = this.dialog.open(On_event_clickComponent, {
         width: '400px',
-        panelClass: 'mat-container', data: { reservation: event.reservation }
+        panelClass: 'mat-container',
+        data: { reservation: event.reservation } // Pass reservation data to the dialog
       });
       dialogRef.afterClosed().subscribe(async result => {
-        await this.getAllreservation();
+        await this.getAllreservation(); // Refresh reservations after dialog is closed
         console.log('The dialog was closed', result);
       });
     }
-    this.getAllreservation();
+    this.getAllreservation(); // Refresh reservations
   }
 
+  // Function to get background color based on reservation status
   getBackgroundColorEvent(number: number): EventColor {
     switch (number) {
       case 0:
@@ -193,12 +184,13 @@ export class TimelineComponent implements OnInit {
     }
   }
 
+  // Function to get text color based on reservation status
   getTextColorEvent(number: number): string {
     switch (number) {
       case 0:
         return 'purpleEvent';
       case 1:
-        return "greenEvent";
+        return 'greenEvent';
       case 2:
         return 'redEvent';
       case 3:
@@ -207,6 +199,5 @@ export class TimelineComponent implements OnInit {
         return 'blueEvent';
     }
   }
-
 
 }

@@ -7,14 +7,16 @@ import { SharedService } from '../shared.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  isSidebarClosed = true;
+  isSidebarClosed = true; // Variable pour suivre l'état de la barre latérale (ouverte ou fermée)
+
   constructor(private sharedService: SharedService) { }
 
+  // Fonction pour basculer l'état de la barre latérale en appelant le service partagé
   toggleSidebar(): void {
     this.sharedService.toggleSidebar();
   }
 
+  // Fonction appelée lors de l'initialisation du composant
   ngOnInit() {
   }
-
 }

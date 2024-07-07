@@ -1,20 +1,46 @@
+<!-- Logo section with an icon and text -->
 <a class="logo .icon">
-   <br> <i class='bx bxs-school'></i>
-    <div class="logo-name"><br><span>Reserver </span>Salle</div>
-</a>
-
-<ul class="side-menu">
-    <li class="active"><a routerLink="/"><i class='bx bx-calendar'></i>Calendrier</a></li>
-    <li *ngIf="userService.isAdmin()"><a routerLink="/users-management"><i class='bx bx-group'></i>Utilisateurs</a></li>
-    <li *ngIf="userService.isAdmin()"><a routerLink="/salle"><i class='bx bx-door-open'></i>Salle</a></li>
-</ul>
-
-
-<ul class="side-menu">
-    <li>
-        <a class="logout" (click)="Logout()">
-            <i class='bx bx-log-out-circle'></i>
-            Déconnexion
-        </a>
-    </li>
-</ul>
+    <br> <i class='bx bxs-school'></i> <!-- School icon -->
+     <div class="logo-name">
+         <br>
+         <span>Reserver </span>Salle <!-- Logo text with a span for styling -->
+     </div>
+ </a>
+ 
+ <!-- Side menu with navigation links -->
+ <ul class="side-menu">
+     <!-- Active link for the calendar -->
+     <li class="active">
+         <a routerLink="/">
+             <i class='bx bx-calendar'></i> <!-- Calendar icon -->
+             Calendrier
+         </a>
+     </li>
+ 
+     <!-- Link for user management, visible only to admin users -->
+     <li *ngIf="userService.isAdmin()">
+         <a routerLink="/users-management">
+             <i class='bx bx-group'></i> <!-- Users icon -->
+             Utilisateurs
+         </a>
+     </li>
+ 
+     <!-- Link for room management, visible only to admin users -->
+     <li *ngIf="userService.isAdmin()">
+         <a routerLink="/salle">
+             <i class='bx bx-door-open'></i> <!-- Room icon -->
+             Salle
+         </a>
+     </li>
+ </ul>
+ 
+ <!-- Side menu with a logout link -->
+ <ul class="side-menu">
+     <li>
+         <a class="logout" (click)="Logout()">
+             <i class='bx bx-log-out-circle'></i> <!-- Logout icon -->
+             Déconnexion
+         </a>
+     </li>
+ </ul>
+ 

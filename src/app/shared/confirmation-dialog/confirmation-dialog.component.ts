@@ -8,16 +8,19 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ConfirmationDialogComponent {
 
+  // Constructeur du composant
   constructor(
     public dialogRef: MatDialogRef<ConfirmationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { message: string }
+    @Inject(MAT_DIALOG_DATA) public data: { message: string } // Injection de données dans la boîte de dialogue
   ) {}
 
+  // Fonction appelée lorsque l'utilisateur confirme l'action
   onConfirmClick(): void {
-    this.dialogRef.close(true);
+    this.dialogRef.close(true); // Ferme la boîte de dialogue et renvoie 'true'
   }
 
+  // Fonction appelée lorsque l'utilisateur annule l'action
   onCancelClick(): void {
-    this.dialogRef.close(false);
+    this.dialogRef.close(false); // Ferme la boîte de dialogue et renvoie 'false'
   }
 }

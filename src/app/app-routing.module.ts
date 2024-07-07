@@ -8,20 +8,31 @@ import { RoleGuard } from './core/guards/role.guard';
 const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
-    
+    component: LayoutComponent, // Composant de mise en page principal
     children: [
-      { path: '',canActivate: [AuthGuard],  loadChildren: () => import('./features/planning/planning.module').then(m => m.PlanningModule) },
-      { path: 'users-management', canActivate: [RoleGuard], loadChildren: () => import('./features/Users/Users.module').then(m => m.UsersModule) },
-      { path: 'salle',canActivate: [RoleGuard],  loadChildren: () => import('./features/salle/salle.module').then(m => m.SalleModule) },
+      {
+        path: '',
+        canActivate: [AuthGuard], // Garde d'authentification pour protéger l'accès
+        loadChildren: () => import('./features/planning/planning.module').then(m => m.PlanningModule) // Chargement du module de planification en lazy loading
+      },
+      {
+        path: 'users-management',
+        canActivate: [RoleGuard], // Garde de rôle pour protéger l'accès aux utilisateurs avec un rôle spécifique
+        loadChildren: () => import('./features/Users/Users.module').then(m => m.UsersModule) // Chargement du module de gestion des utilisateurs en lazy loading
+      },
+      {
+        path: 'salle',
+        canActivate: [RoleGuard], // Garde de rôle pour protéger l'accès aux utilisateurs avec un rôle spécifique
+        loadChildren: () => import('./features/salle/salle.module').then(m => m.SalleModule) // Chargement du module de gestion des salles en lazy loading
+      },
     ]
   },
-  { path: 'login', component: LoginComponent },
-  { path: '**', redirectTo: 'login' } 
+  { path: 'login', component: LoginComponent }, // Route pour le composant de connexion
+  { path: '**', redirectTo: 'login' } // Redirection vers la page de connexion pour toutes les autres routes non définies
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)], // Configuration du routeur pour utiliser les routes définies
+  exports: [RouterModule] // Exportation du module de routage pour qu'il soit accessible dans toute l'application
 })
 export class AppRoutingModule { }
