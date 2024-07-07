@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { HeaderComponent } from './shared/header/header.component';
-import { MainComponent } from './shared/main/main.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -70,7 +69,7 @@ import { LayoutComponent } from './shared/layout/layout.component';
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
   ],
   declarations: [
-    AppComponent,SidebarComponent,HeaderComponent,MainComponent,ConfirmationDialogComponent,LoginComponent,LayoutComponent
+    AppComponent,SidebarComponent,HeaderComponent,ConfirmationDialogComponent,LoginComponent,LayoutComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'fr' }
