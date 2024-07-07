@@ -101,6 +101,7 @@ export class UsersManagementComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Confirmed');
+        console.log(userId);
         this.userService.deleteUser(userId.toString()).subscribe(
           response => {
             console.log('User deleted successfully', response);

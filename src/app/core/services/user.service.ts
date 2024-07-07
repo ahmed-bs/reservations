@@ -35,8 +35,8 @@ export class UserService {
 
 
 
-  updateUser(_id: string, user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${_id}`, user);
+  updateUser( user: User,id: string,): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
   }
 
 
@@ -52,14 +52,20 @@ export class UserService {
 
 
   private userRole: string | null = null;
-
+  public user!:User;
 
   private loadUserRole(): void {
     const token = localStorage.getItem('token');
     if (token) {
       const decodedToken: any = jwtDecode(token);
-      this.userRole = decodedToken.Role || decodedToken.role; 
+      console.log("decoede :" ,decodedToken);
+ this.getUser(decodedToken.id)
+    .subscribe(res =>{
+      this.user  =res;
+      console.log(res);
+      this.userRole = this.user.role; 
     }
+    );}
   }
 
   public getUserRole(): string | null {

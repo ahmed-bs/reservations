@@ -1,12 +1,12 @@
 <a class="logo .icon">
-    <i class='bx bxs-school'></i>
-    <div class="logo-name"><span>Reserver </span>Salle</div>
+   <br> <i class='bx bxs-school'></i>
+    <div class="logo-name"><br><span>Reserver </span>Salle</div>
 </a>
 
 <ul class="side-menu">
     <li class="active"><a routerLink="/"><i class='bx bx-calendar'></i>Calendrier</a></li>
     <li *ngIf="userService.isAdmin()"><a routerLink="/users-management"><i class='bx bx-group'></i>Utilisateurs</a></li>
-    <li><a routerLink="/salle"><i class='bx bx-door-open'></i>Salle</a></li>
+    <li *ngIf="userService.isAdmin()"><a routerLink="/salle"><i class='bx bx-door-open'></i>Salle</a></li>
 </ul>
 
 

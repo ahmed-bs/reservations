@@ -88,8 +88,9 @@ export class ReservationPopupComponent implements OnInit {
         Status: 0,
         Comment: formValue.note,
         SalleId: formValue.SalleId,
-        UserId: formValue.userId,
+        UserId: formValue.UserId,
       };
+console.log("resre : ",reservation);
 
       this.reservationService.createReservation(reservation).subscribe({
         next: (response) => {

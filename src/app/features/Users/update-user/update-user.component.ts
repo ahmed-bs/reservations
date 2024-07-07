@@ -34,17 +34,17 @@ export class UpdateUserComponent implements OnInit {
     console.log(this.updateForm);
     
   }
-
   selectRole(role: string) {
     this.selectedRole = role;
   }
-
   onSave() {
     if (this.updateForm.valid) {
       const updatedUser = {
-        ...this.data,
-        ...this.updateForm.value,
-        role: this.selectedRole
+        _id:this.data._id,
+        name:this.updateForm.value.name,
+        email: this.updateForm.value.email,
+        password: this.updateForm.value.password,
+        role: this.updateForm.value.role
       };
 
       this.userService.updateUser(updatedUser, updatedUser._id.toString()).subscribe(

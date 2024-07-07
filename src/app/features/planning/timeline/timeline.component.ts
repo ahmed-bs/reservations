@@ -160,6 +160,7 @@ export class TimelineComponent implements OnInit {
       await this.getAllreservation();
       console.log('The dialog was closed', result);
     });
+    this.getAllreservation();
   }
 
   eventClicked(event: CalendarEventWithReservation): void {
@@ -174,6 +175,7 @@ export class TimelineComponent implements OnInit {
         console.log('The dialog was closed', result);
       });
     }
+    this.getAllreservation();
   }
 
   getBackgroundColorEvent(number: number): EventColor {

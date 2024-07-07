@@ -41,8 +41,8 @@ export class AddSallePopupComponent implements OnInit {
       console.log(formValue);
 
       const salle: Salle = {
-        SalleName: formValue.name,
-        SalleNumber: formValue.email,
+        SalleName: formValue.SalleName,
+        SalleNumber: formValue.SalleNumber,
       };
 
       this.salleService.createSalle(salle).subscribe({

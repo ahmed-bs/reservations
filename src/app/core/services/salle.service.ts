@@ -25,8 +25,8 @@ export class SalleService {
     return this.http.post<Salle>(this.apiUrl, salle);
   }
 
-  updateSalle(id: string, salle: Salle): Observable<Salle> {
-    return this.http.put<Salle>(`${this.apiUrl}/${id}`, salle);
+  updateSalle(salle: Salle ,id: string ): Observable<Salle> {
+  debugger;  return this.http.put<Salle>(`${this.apiUrl}/${id}`, salle);
   }
 
   deleteSalle(id: string): Observable<void> {

@@ -7,7 +7,7 @@ import { endPoint } from '../utils/endpoint';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = endPoint.Api +'api/login'; 
+  private baseUrl = endPoint.Api +'api/'; 
 
 
 
@@ -27,13 +27,14 @@ export class AuthService {
 
   login(credentials: any): Observable<any> {
 
-    return this.http.post(`${this.baseUrl}/login`, credentials);
+    return this.http.post(`${this.baseUrl}login`, credentials);
   }
 
   logout(): Observable<any> {
     const token = localStorage.getItem('token');
     localStorage.setItem('token','');
     const headers = { 'Authorization': `Bearer ${token}` };
+     window.location.reload();
     return this.http.post(`${this.baseUrl}/logout`, {}, { headers });
   }
 }
